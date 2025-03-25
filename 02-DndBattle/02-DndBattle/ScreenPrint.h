@@ -5,6 +5,7 @@
 #include "Character.h"
 
 using std::cout;
+using std::cin;
 using std::string;
 
 static enum class CurrentBattlePhase {	
@@ -41,6 +42,20 @@ void PrintCharacters(Character* character, string spaces) {
 	}
 }
 
+void PrintText(Character* character) {
+	string firstSpaces(30, ' ');
+	string attackName = attackInfos[character->attacks[0]].name;
+	cout << firstSpaces << "1." << attackName;
+	string secondSpaces(30 - int(attackName.length()), ' ');
+	cout << secondSpaces << "2." << attackInfos[character->attacks[1]].name << "\n";
+
+	attackName = attackInfos[character->attacks[2]].name;
+	cout << firstSpaces << "3." << attackName;
+	string thirdSpaces(30 - int(attackName.length()), ' ');
+	cout << secondSpaces << "4." << attackInfos[character->attacks[3]].name << "\n";
+	cin >> thirdSpaces; //Just for tests purposes
+}
+
 void PrintScreen(Character* playerCharacter, Character* enemyCharacter) {
 	string playerSpaces(20, ' ');
 	playerSpaces += "| ";
@@ -60,4 +75,5 @@ void PrintScreen(Character* playerCharacter, Character* enemyCharacter) {
 	string separator(120, '-');
 	cout << separator << "\n\n";
 
+	PrintText(playerCharacter);
 }

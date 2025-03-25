@@ -132,7 +132,6 @@
     <ClCompile Include="CharacterTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Attacks.h" />
     <ClInclude Include="CharacterTypes.h" />
     <ClInclude Include="Elements.h" />
     <ClInclude Include="Character.h" />

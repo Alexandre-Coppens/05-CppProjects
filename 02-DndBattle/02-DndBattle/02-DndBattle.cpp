@@ -15,49 +15,59 @@ void Start() {
 	CharacterType characterCreator;
 
 	DamageTypes dragonTypes[2]{ DamageTypes::Lighting, DamageTypes::Normal };
-	Character dragon("DRAGON", characterCreator.GetSprite(CharacterTypes::Dragon), dragonTypes, 1000, 1000);
+	AttackName dragonAttacks[4]{ AttackName::MoltenBreath, AttackName::LightningCall, AttackName::MightyDive, AttackName::OldMagic };
+	Character dragon("DRAGON", characterCreator.GetSprite(CharacterTypes::Dragon), dragonTypes, dragonAttacks, 1000, 1000);
 	dragon.GetDamage(100);
 
 	DamageTypes lichTypes[2]{ DamageTypes::Necrotic, DamageTypes::Normal };
-	Character lich("LICH", characterCreator.GetSprite(CharacterTypes::Lich), lichTypes, 356, 356);
+	AttackName lichAttacks[4]{ AttackName::Fireball, AttackName::Poison, AttackName::Lightning, AttackName::OldMagic };
+	Character lich("LICH", characterCreator.GetSprite(CharacterTypes::Lich), lichTypes, lichAttacks, 356, 356);
 	lich.GetDamage(100);
 
 	DamageTypes golemTypes[2]{ DamageTypes::Normal, DamageTypes::Normal };
-	Character golem("GOLEM", characterCreator.GetSprite(CharacterTypes::Golem), golemTypes, 500, 500);
+	AttackName golemAttacks[4]{ AttackName::ThrowRock, AttackName::Slam, AttackName::HeadSmasher, AttackName::OldMagic };
+	Character golem("GOLEM", characterCreator.GetSprite(CharacterTypes::Golem), golemTypes, golemAttacks, 500, 500);
 	golem.GetDamage(100);
 
 	DamageTypes beholderTypes[2]{ DamageTypes::Fire, DamageTypes::Cold };
-	Character beholder("BEHOLDER", characterCreator.GetSprite(CharacterTypes::Beholder), beholderTypes, 500, 250);
+	AttackName beholderAttacks[4]{ AttackName::IceBreath, AttackName::Stun, AttackName::Chomp, AttackName::Fireball };
+	Character beholder("BEHOLDER", characterCreator.GetSprite(CharacterTypes::Beholder), beholderTypes, beholderAttacks, 500, 250);
 	beholder.GetDamage(100);
 
 	DamageTypes mimicTypes[2]{ DamageTypes::Lighting, DamageTypes::Piercing };
-	Character mimic("MIMIC", characterCreator.GetSprite(CharacterTypes::Mimic), mimicTypes, 500, 150);
+	AttackName mimicAttacks[4]{ AttackName::Zap, AttackName::ShortCircuit, AttackName::Dive, AttackName::Triped };
+	Character mimic("MIMIC", characterCreator.GetSprite(CharacterTypes::Mimic), mimicTypes, mimicAttacks, 500, 150);
 	mimic.GetDamage(100);
 
 	DamageTypes skeletonTypes[2]{ DamageTypes::Necrotic, DamageTypes::Slashing };
-	Character skeleton("SKELETON", characterCreator.GetSprite(CharacterTypes::Skeleton), skeletonTypes, 500, 75);
+	AttackName skeletonAttacks[4]{ AttackName::Slash, AttackName::Poison, AttackName::Triped, AttackName::Triped };
+	Character skeleton("SKELETON", characterCreator.GetSprite(CharacterTypes::Skeleton), skeletonTypes, skeletonAttacks, 500, 75);
 	skeleton.GetDamage(100);
 	
 
 
 
 	DamageTypes knightTypes[2]{ DamageTypes::Slashing, DamageTypes::Fire };
-	Character knight("KNIGHT", characterCreator.GetSprite(CharacterTypes::Knight), knightTypes, 500, 500);
+	AttackName knightAttacks[4]{ AttackName::Slash, AttackName::FireSword, AttackName::Smite, AttackName::Heal };
+	Character knight("KNIGHT", characterCreator.GetSprite(CharacterTypes::Knight), knightTypes, knightAttacks, 500, 500);
 	knight.GetDamage(100); 
 
 	DamageTypes rogueTypes[2]{ DamageTypes::Piercing, DamageTypes::Necrotic };
-	Character rogue("ROGUE", characterCreator.GetSprite(CharacterTypes::Rogue), rogueTypes, 500, 300);
+	AttackName rogueAttacks[4]{ AttackName::PiercingDagger, AttackName::ShadowDagger, AttackName::Poison, AttackName::Heal };
+	Character rogue("ROGUE", characterCreator.GetSprite(CharacterTypes::Rogue), rogueTypes, rogueAttacks, 500, 300);
 	rogue.GetDamage(100); 
 
 	DamageTypes wizardTypes[2]{ DamageTypes::Lighting, DamageTypes::Fire };
-	Character wizard("WIZARD", characterCreator.GetSprite(CharacterTypes::Wizard), wizardTypes, 500, 250);
+	AttackName wizardAttacks[4]{ AttackName::Fireball, AttackName::Lightning, AttackName::Poison, AttackName::Heal };
+	Character wizard("WIZARD", characterCreator.GetSprite(CharacterTypes::Wizard), wizardTypes, wizardAttacks, 500, 250);
 	wizard.GetDamage(100); 
 
 	DamageTypes barbarianTypes[2]{ DamageTypes::Fire, DamageTypes::Cold };
-	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, 500, 450);
+	AttackName barbarianAttacks[4]{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
+	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, barbarianAttacks, 500, 450);
 	barbarian.GetDamage(100);
 
-	PrintScreen(&mimic, &dragon);
+	PrintScreen(&beholder, &barbarian);
 }
 
 int main()

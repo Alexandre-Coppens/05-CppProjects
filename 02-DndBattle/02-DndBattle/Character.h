@@ -12,13 +12,13 @@ public:
 	string name;
 	vector<string>* sprite;
 	DamageTypes damageTypes[2];
-	DamageTypes damageTypes[2];
+	AttackName attacks[4];
 
 	float speed;
 	float health;
 	float maxHealth;
 	Status currentStatus;
 
-	Character(string _name, vector<string>* _sprite, DamageTypes _types[2], float _speed, float _health);
+	Character(string _name, vector<string>* _sprite, DamageTypes _types[2], AttackName _attacks[4], float _speed, float _health);
 	void GetDamage(int damages);
 };

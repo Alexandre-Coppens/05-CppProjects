@@ -38,8 +38,5 @@
     <ClInclude Include="ScreenPrint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Attacks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
