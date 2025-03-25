@@ -21,18 +21,21 @@
     <ClCompile Include="Character.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CharacterType.cpp">
+    <ClCompile Include="CharacterTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Characters.h">
+    <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Elements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CharacterTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenPrint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

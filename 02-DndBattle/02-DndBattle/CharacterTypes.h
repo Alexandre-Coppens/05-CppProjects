@@ -6,9 +6,9 @@ using std::string;
 using std::vector;
 
 enum class CharacterTypes {
-	Cold,		//
-	Fire,		//
-	Lighting,	//
+	Skeleton,	//Necrotic, Slashing
+	Mimic,		//Ligthing, Piercing 
+	Beholder,	//Fire, Cold
 	Golem,		//Normal
 	Lich,		//Necrotic
 	Dragon,		//Lighting
@@ -22,8 +22,19 @@ enum class CharacterTypes {
 class CharacterType {
 public:
 	vector<string> dragon;
+	vector<string> lich;
+	vector<string> golem;
+	vector<string> beholder;
+	vector<string> mimic;
+	vector<string> skeleton;
+
+	vector<string> knight;
+	vector<string> rogue;
+	vector<string> wizard;
+	vector<string> barbarian;
+
+	vector<string> noImageFound;
 
 	CharacterType();
-	void Start();
 	vector<string>* GetSprite(CharacterTypes character);
 };

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <vector>
 #include "Elements.h"
@@ -12,11 +13,11 @@ public:
 	vector<string>* sprite;
 	DamageTypes damageTypes[2]{ DamageTypes::Normal, DamageTypes::Normal };
 
-	float speed = 100;
-	float health = 100;
+	float speed;
+	float health;
+	float maxHealth;
 	Status currentStatus = Status::None;
 
-	Character();
-	void Start(string _name, vector<string>* _sprite, DamageTypes _types[2], float _speed, float _health);
-	void ShowSprite(int spaces);
+	Character(string _name, vector<string>* _sprite, DamageTypes _types[2], float _speed, float _health);
+	void GetDamage(int damages);
 };

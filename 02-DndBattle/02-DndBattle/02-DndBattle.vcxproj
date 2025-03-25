@@ -129,12 +129,13 @@
   <ItemGroup>
     <ClCompile Include="02-DndBattle.cpp" />
     <ClCompile Include="Character.cpp" />
-    <ClCompile Include="CharacterType.cpp" />
+    <ClCompile Include="CharacterTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterTypes.h" />
     <ClInclude Include="Elements.h" />
-    <ClInclude Include="Characters.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="ScreenPrint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

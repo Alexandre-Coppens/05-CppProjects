@@ -3,22 +3,66 @@
 
 #include <iostream>
 #include <string>
-#include <Vector>
-#include "Characters.h"
+#include <vector>
+#include "Character.h"
 #include "CharacterTypes.h"
+#include "ScreenPrint.h"
 
 using std::string;
 using std::vector;
 
+void Start() {
+	CharacterType characterCreator;
+
+	DamageTypes dragonTypes[2]{ DamageTypes::Lighting, DamageTypes::Normal };
+	Character dragon("DRAGON", characterCreator.GetSprite(CharacterTypes::Dragon), dragonTypes, 1000, 1000);
+	dragon.GetDamage(100);
+
+	DamageTypes lichTypes[2]{ DamageTypes::Necrotic, DamageTypes::Normal };
+	Character lich("LICH", characterCreator.GetSprite(CharacterTypes::Lich), lichTypes, 356, 356);
+	lich.GetDamage(100);
+
+	DamageTypes golemTypes[2]{ DamageTypes::Normal, DamageTypes::Normal };
+	Character golem("GOLEM", characterCreator.GetSprite(CharacterTypes::Golem), golemTypes, 500, 500);
+	golem.GetDamage(100);
+
+	DamageTypes beholderTypes[2]{ DamageTypes::Fire, DamageTypes::Cold };
+	Character beholder("BEHOLDER", characterCreator.GetSprite(CharacterTypes::Beholder), beholderTypes, 500, 250);
+	beholder.GetDamage(100);
+
+	DamageTypes mimicTypes[2]{ DamageTypes::Lighting, DamageTypes::Piercing };
+	Character mimic("MIMIC", characterCreator.GetSprite(CharacterTypes::Mimic), mimicTypes, 500, 150);
+	mimic.GetDamage(100);
+
+	DamageTypes skeletonTypes[2]{ DamageTypes::Necrotic, DamageTypes::Slashing };
+	Character skeleton("SKELETON", characterCreator.GetSprite(CharacterTypes::Skeleton), skeletonTypes, 500, 75);
+	skeleton.GetDamage(100);
+	
+
+
+
+	DamageTypes knightTypes[2]{ DamageTypes::Slashing, DamageTypes::Fire };
+	Character knight("KNIGHT", characterCreator.GetSprite(CharacterTypes::Knight), knightTypes, 500, 500);
+	knight.GetDamage(100); 
+
+	DamageTypes rogueTypes[2]{ DamageTypes::Piercing, DamageTypes::Necrotic };
+	Character rogue("ROGUE", characterCreator.GetSprite(CharacterTypes::Rogue), rogueTypes, 500, 300);
+	rogue.GetDamage(100); 
+
+	DamageTypes wizardTypes[2]{ DamageTypes::Lighting, DamageTypes::Fire };
+	Character wizard("WIZARD", characterCreator.GetSprite(CharacterTypes::Wizard), wizardTypes, 500, 250);
+	wizard.GetDamage(100); 
+
+	DamageTypes barbarianTypes[2]{ DamageTypes::Fire, DamageTypes::Cold };
+	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, 500, 450);
+	barbarian.GetDamage(100);
+
+	PrintScreen(&knight, &beholder);
+}
+
 int main()
 {
-	CharacterType characterCreator;
-	characterCreator.Start();
-
-	Character dragon;
-	DamageTypes dragonTypes[2]{ DamageTypes::Lighting, DamageTypes::Normal };
-	dragon.Start("Dragon", characterCreator.GetSprite(CharacterTypes::Dragon), dragonTypes, 100, 100);
-	dragon.ShowSprite(0);
+	Start();
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

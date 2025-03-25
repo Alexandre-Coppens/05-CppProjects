@@ -1,10 +1,12 @@
 #pragma once
+
 #include <map>
+#include <string>
 
 using std::map;
 using std::string;
 
-enum class Status {		//Each turn 
+static enum class Status {		//Each turn 
 	Poisoned,	//Make 5% Damage per turn
 	Frost,		//Slow enemy by 10
 	Burn,		//Make 5% Damage per turn
@@ -12,7 +14,7 @@ enum class Status {		//Each turn
 	None,		
 };
 
-enum class DamageTypes {
+static enum class DamageTypes {
 	Cold,		// +: Piercing	++: Necrotic
 	Fire,		// +: Cold		++: Slashing
 	Lighting,	// +: Slashing	++: Piercing
@@ -22,7 +24,7 @@ enum class DamageTypes {
 	Normal,		//None
 };
 
-map<DamageTypes, string> objects{
+static map<DamageTypes, string> objects{
 		{DamageTypes::Cold, "Cold"},
 		{DamageTypes::Fire, "Fire"},
 		{DamageTypes::Lighting, "Lighting"},
@@ -30,7 +32,3 @@ map<DamageTypes, string> objects{
 		{DamageTypes::Slashing, "Slashing"},
 		{DamageTypes::Necrotic, "Necrotic"}
 };
-
-string PrintDamageType(DamageTypes damageType) {
-	return objects[damageType];
-}
