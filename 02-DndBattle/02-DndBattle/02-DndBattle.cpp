@@ -57,7 +57,7 @@ void Start() {
 	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, 500, 450);
 	barbarian.GetDamage(100);
 
-	PrintScreen(&knight, &beholder);
+	PrintScreen(&mimic, &dragon);
 }
 
 int main()

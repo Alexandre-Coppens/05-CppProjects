@@ -42,22 +42,22 @@ void PrintCharacters(Character* character, string spaces) {
 }
 
 void PrintScreen(Character* playerCharacter, Character* enemyCharacter) {
-	cout << "\n";
+	string playerSpaces(20, ' ');
+	playerSpaces += "| ";
+	string enemySpaces(50, ' ');
+	enemySpaces = playerSpaces + enemySpaces;
+	string container(73, '-');
 
-	int spaceCount = 70;
-	string spaces;
-	for (int i = 0; i < spaceCount; i++) {
-		spaces += " ";
-	}
+	cout << playerSpaces.substr(0, 20) << " " << container << "\n";
 
-	int pspaceCount = 20; //Chercher un algo pour faire ca
-	string pspaces;
-	for (int i = 0; i < pspaceCount; i++) {
-		pspaces += " ";
-	}
+	PrintCharacters(enemyCharacter, enemySpaces);
+	cout << playerSpaces <<"\n";
+	PrintCharacters(playerCharacter, playerSpaces);
+	cout << playerSpaces << "\n";
 
-	PrintCharacters(enemyCharacter, spaces);
-	cout << "\n";
-	PrintCharacters(playerCharacter, pspaces);
-	cout << "\n";
+	cout << playerSpaces.substr(0, 20) << " " << container << "\n";
+
+	string separator(120, '-');
+	cout << separator << "\n\n";
+
 }

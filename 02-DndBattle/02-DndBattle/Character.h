@@ -9,14 +9,15 @@ using std::vector;
 
 class Character {
 public:
-	string name = "None";
+	string name;
 	vector<string>* sprite;
-	DamageTypes damageTypes[2]{ DamageTypes::Normal, DamageTypes::Normal };
+	DamageTypes damageTypes[2];
+	DamageTypes damageTypes[2];
 
 	float speed;
 	float health;
 	float maxHealth;
-	Status currentStatus = Status::None;
+	Status currentStatus;
 
 	Character(string _name, vector<string>* _sprite, DamageTypes _types[2], float _speed, float _health);
 	void GetDamage(int damages);
