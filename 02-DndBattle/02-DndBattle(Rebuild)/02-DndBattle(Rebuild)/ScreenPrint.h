@@ -13,6 +13,7 @@ enum class CurrentBattlePhase {
 	ConfirmAttack,
 	AttackPlayer,
 	AttackEnemy,
+	Paralysed,
 	None,
 };
 
@@ -60,6 +61,12 @@ static void PrintAttack(Character* attacker, Character* defender, short attackCh
 	cout << firstSpaces << attacker->name << " used " << info->name << " on " << defender->name << " !\n";
 	cout << firstSpaces << defender->name << " took " << info->damage * GetWeakness(info->damageType, defender->elementalTypes)
 		<< " and " << statusNames[info->status] << " !\n";
+}
+
+static void PrintParalysed(Character* attacker) {
+	string firstSpaces(30, ' ');
+	cout << "\n";
+	cout << firstSpaces << attacker->name << " is Paralysed, he will need time to recover!\n";
 }
 
 static string GetStrHealth(Character* character) {
@@ -118,6 +125,10 @@ static void PrintScreen(Character* playerCharacter, Character* enemyCharacter, C
 		break;
 	case CurrentBattlePhase::AttackPlayer:
 		PrintAttack(playerCharacter, enemyCharacter, playerChoice);
+		break;
+	case CurrentBattlePhase::Paralysed:
+		if(playerChoice == 0) PrintParalysed(playerCharacter);
+		if(playerChoice == 1) PrintParalysed(enemyCharacter);
 		break;
 	}
 }

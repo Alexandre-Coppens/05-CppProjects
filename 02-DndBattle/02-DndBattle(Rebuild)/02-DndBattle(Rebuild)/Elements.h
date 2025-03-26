@@ -158,3 +158,12 @@ static float GetWeakness(DamageTypes attackType, vector<DamageTypes> enemyType) 
 	}
 	return ret;
 }
+
+static bool HasStatus(vector<Status> list, Status lookFor) {
+	if (list.size()) return false;
+	for(Status x : list)
+	{
+		if (x == lookFor) return true;
+	}
+	return false;
+}

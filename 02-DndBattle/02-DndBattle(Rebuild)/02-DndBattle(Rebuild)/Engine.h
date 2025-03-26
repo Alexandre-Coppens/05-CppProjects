@@ -27,6 +27,9 @@ public:
 
 private:
 	int UserInput();
+	void DamageCharacter(Character* defender, AttackInfo attack);
+	bool EffectsBeforeAttack(Character* attacker, bool isPlayer);
+	bool EffectsAfterAttack(Character* defender);
 	void PrintCurrentPhase(int choice);
 	void AttackCharacter(Character* attacker, Character* defender, short attackChoice);
 

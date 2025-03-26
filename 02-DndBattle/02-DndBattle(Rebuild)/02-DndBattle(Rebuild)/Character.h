@@ -17,7 +17,7 @@ public:
 	float speed;
 	float health;
 	float maxHealth;
-	Status currentStatus;
+	vector<Status> currentStatus;
 
 public:
 	Character(string _name, vector<string>* _sprite, vector<DamageTypes> _types, AttackName _attacks[4], float _speed, float _health);

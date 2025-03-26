@@ -18,7 +18,7 @@ Character::Character(string _name, vector<string>* _sprite, vector<DamageTypes> 
 	speed = _speed;
 	maxHealth = _health;
 	health = _health;
-	currentStatus = Status::None;
+	currentStatus = {};
 }
 
 void Character::GetDamage(int damages) {

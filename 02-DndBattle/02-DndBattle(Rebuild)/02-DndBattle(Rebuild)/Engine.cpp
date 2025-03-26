@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "ScreenPrint.h"
 #include "Engine.h"
+#include "Elements.h"
 
 using std::cin;
 using std::cout;
@@ -52,7 +53,7 @@ Engine::Engine() {
 	AttackName barbarianAttacks[4]{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
 	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, barbarianAttacks, float(rand() % 50), float(450));
 
-	playerCharacters = { knight, rogue, wizard, barbarian};
+	playerCharacters = { barbarian, rogue, wizard, barbarian};
 	enemyCharacters = { skeleton, mimic, beholder, golem, lich, dragon };
 
 	currentPhase = CurrentBattlePhase::ChooseAttack;
@@ -70,7 +71,7 @@ void Engine::Update() {
 		input = UserInput();
 	} while (input != 1);
 
-	if (playerCharacters[currentActors[0]].speed >= enemyCharacters[currentActors[1]].speed) {
+	if (playerCharacters[currentActors[0]].speed + HasStatus(playerCharacters[currentActors[0]].currentStatus,Status::Frost)?-10:0 >= enemyCharacters[currentActors[1]].speed + HasStatus(enemyCharacters[currentActors[1]].currentStatus, Status::Frost) ? -10 : 0) {
 		currentPhase = CurrentBattlePhase::AttackPlayer;
 		UserInput();
 		currentPhase = CurrentBattlePhase::AttackEnemy;
@@ -84,18 +85,8 @@ void Engine::Update() {
 	}
 }
 
-void Engine::PrintCurrentPhase(int choice) {
-	PrintScreen(&playerCharacters[currentActors[0]], &enemyCharacters[currentActors[1]], currentPhase, choice);
-}
-
-void Engine::AttackCharacter(Character* attacker, Character* defender, short attackChoice) {
-	AttackInfo info = attackInfos[attacker->attacks[attackChoice]];
-	defender->health -= info.damage * GetWeakness(info.damageType, defender->elementalTypes);
-}
-
 int Engine::UserInput() {
 	short choice;
-	string x;
 	switch (currentPhase)
 	{
 	case CurrentBattlePhase::ChooseAttack:
@@ -105,7 +96,7 @@ int Engine::UserInput() {
 			cin >> choice;
 			if (!cin.good()) { cin.clear(); cin.ignore(256, '\n'); choice = 0; }
 		} while (choice < 1 || choice > 4);
-		return choice-1;
+		return choice - 1;
 
 	case CurrentBattlePhase::ConfirmAttack:
 		do {
@@ -117,19 +108,108 @@ int Engine::UserInput() {
 		return choice;
 
 	case CurrentBattlePhase::AttackPlayer:
-		AttackCharacter(&playerCharacters[currentActors[0]], &enemyCharacters[currentActors[1]], pattack);
-		PrintCurrentPhase(pattack);
-		cin >> x;
+		if (!EffectsBeforeAttack(&playerCharacters[currentActors[0]], true)) {
+			AttackCharacter(&playerCharacters[currentActors[0]], &enemyCharacters[currentActors[1]], pattack);
+			PrintCurrentPhase(pattack);
+		}
+		cin.ignore();
+		cin.ignore();
+
+		EffectsAfterAttack(&enemyCharacters[currentActors[1]]);
 		return 0;
 
 	case CurrentBattlePhase::AttackEnemy:
-		eattack = rand() % 4;
-		AttackCharacter(&enemyCharacters[currentActors[1]], &playerCharacters[currentActors[0]], eattack);
-		PrintCurrentPhase(eattack);
-		cin >> x;
+		if (!EffectsBeforeAttack(&enemyCharacters[currentActors[1]], false)) {
+			eattack = rand() % 4;
+			AttackCharacter(&enemyCharacters[currentActors[1]], &playerCharacters[currentActors[0]], eattack);
+			PrintCurrentPhase(eattack);
+		}
+		cin.ignore();
+		cin.ignore();
+
+		EffectsAfterAttack(&playerCharacters[currentActors[0]]);
 		return 0;
 
 	default:
 		return 0;
 	}
+}
+
+void Engine::PrintCurrentPhase(int choice) {
+	PrintScreen(&playerCharacters[currentActors[0]], &enemyCharacters[currentActors[1]], currentPhase, choice);
+}
+
+void Engine::AttackCharacter(Character* attacker, Character* defender, short attackChoice) {
+	AttackInfo info = attackInfos[attacker->attacks[attackChoice]];
+	DamageCharacter(defender, info);
+	if(info.status != Status::Heal) defender->currentStatus.push_back(info.status);
+	else attacker->currentStatus.push_back(info.status);
+}
+
+void Engine::DamageCharacter(Character* defender, AttackInfo attack){
+	defender->health -= attack.damage * GetWeakness(attack.damageType, defender->elementalTypes);
+}
+
+bool Engine::EffectsBeforeAttack(Character* attacker, bool isPlayer) // Return true if attacker is successfuly paralised
+{
+	vector<Status> statusList;
+	statusList = attacker->currentStatus;
+	bool ret = false;
+	if (statusList.size() == 0) return false;
+	for (int i = 0; i < statusList.size(); i++)
+	{
+		if(statusList[i] == Status::Frost) {
+			if (rand() % 4 == 0)
+			{
+				currentPhase = CurrentBattlePhase::Paralysed;
+				PrintCurrentPhase(isPlayer?0:1);
+				return true;
+			}
+		}
+
+		if (statusList[i] == Status::None) {
+			statusList.erase(find(statusList.begin(), statusList.end(), Status::None));
+			i--;
+			break;
+		}
+
+		if (rand() % 3 == 0) {
+			statusList.erase(find(statusList.begin(), statusList.end(), statusList[i]));
+			i--;
+		}
+	}
+	return ret;
+}
+
+bool Engine::EffectsAfterAttack(Character* defender)
+{
+	vector<Status> statusList;
+	AttackInfo attack;
+	statusList = defender->currentStatus;
+	if (statusList.size() == 0) return false;
+	for (int i = 0; i < statusList.size(); i++)
+	{
+		switch (statusList[i])
+		{
+		case Status::Poisoned:
+			attack.damageType = DamageTypes::Necrotic;
+			attack.damage = defender->maxHealth / 20;
+			attack.status = Status::None;
+			attack.name = "Poison";
+			DamageCharacter(defender, attack);
+			break;
+
+		case Status::Burn:
+			attack.damageType = DamageTypes::Fire;
+			attack.damage = defender->maxHealth / 20;
+			attack.status = Status::None;
+			attack.name = "Fire";
+			DamageCharacter(defender, attack);
+			break;
+
+		default:
+			break;
+		}
+	}
+	return true;
 }
