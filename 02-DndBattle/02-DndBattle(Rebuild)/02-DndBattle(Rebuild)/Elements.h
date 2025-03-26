@@ -14,7 +14,7 @@ enum class Status {		//Each turn at start of attack have 33% chance to lose the 
 	Burn,		//Make 5% Damage per turn
 	Electric,	//Chance for the enemy to not make move 25%
 	Heal,		//heal 5% of health 33% chance 
-	None,		
+	None,
 };
 
 enum class DamageTypes {

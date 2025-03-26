@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{80633dba-5ae1-4535-824b-bff52e90fcbc}</ProjectGuid>
-    <RootNamespace>My02DndBattle</RootNamespace>
+    <ProjectGuid>{95aa1e83-d46c-411c-b144-ef4d8830728c}</ProjectGuid>
+    <RootNamespace>My02DndBattleRebuild</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -108,7 +108,6 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -128,15 +127,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="02-DndBattle.cpp" />
+    <ClCompile Include="02-DndBattle(Rebuild).cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharacterTypes.cpp" />
     <ClCompile Include="Engine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterTypes.h" />
     <ClInclude Include="Elements.h" />
-    <ClInclude Include="Character.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="ScreenPrint.h" />
   </ItemGroup>

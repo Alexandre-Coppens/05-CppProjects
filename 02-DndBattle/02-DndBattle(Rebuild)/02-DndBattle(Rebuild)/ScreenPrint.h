@@ -8,19 +8,61 @@ using std::cout;
 using std::cin;
 using std::string;
 
-enum class CurrentBattlePhase {	
-	ChooseAttack,	
-	ConfirmAttack,		
-	AttackPlayer,		
-	AttackEnemy,	
+enum class CurrentBattlePhase {
+	ChooseAttack,
+	ConfirmAttack,
+	AttackPlayer,
+	AttackEnemy,
 	None,
 };
 
-static string PrintDamageType(DamageTypes damageType) {
+static void PrintAttacksChoice(Character* character);
+static void PrintCharacters(Character* character, string spaces);
+static void PrintConfirmAttacks(Character* character, short playerChoice);
+static void PrintAttack(Character* attacker, Character* defender, short attackChoice);
+static void PrintScreen(Character* playerCharacter, Character* enemyCharacter, CurrentBattlePhase phase, short playerChoice);
+static string GetStrHealth(Character* character);
+static string DamageType(DamageTypes damageType);
+
+static string DamageType(DamageTypes damageType) {
 	return damageTypeNames[damageType];
 }
 
-string GetStrHealth(Character* character) {
+static void PrintAttacksChoice(Character* character) {
+	string firstSpaces(30, ' ');
+	string attackName = attackInfos[character->attacks[0]].name;
+	cout << firstSpaces << "1." << attackName;
+	string secondSpaces(30 - int(attackName.length()), ' ');
+	cout << secondSpaces << "2." << attackInfos[character->attacks[1]].name << "\n";
+
+	attackName = attackInfos[character->attacks[2]].name;
+	cout << firstSpaces << "3." << attackName;
+	string thirdSpaces(30 - int(attackName.length()), ' ');
+	cout << secondSpaces << "4." << attackInfos[character->attacks[3]].name << "\n";
+}
+
+
+static void PrintConfirmAttacks(Character* character, short playerChoice) {
+	AttackInfo* info = &attackInfos[character->attacks[playerChoice]];
+	string firstSpaces(30, ' ');
+	string attackName = attackInfos[character->attacks[playerChoice]].name;
+	cout << firstSpaces << "Your Attack: " << attackName << " !\n";
+	cout << firstSpaces << "Damages: " << info->damage
+		<< " Type: " << damageTypeNames[info->damageType]
+		<< " Inflict: " << statusNames[info->status] << "\n";
+
+	cout << firstSpaces << "1. Confirm Attack		2.Return \n";
+}
+
+static void PrintAttack(Character* attacker, Character* defender, short attackChoice) {
+	AttackInfo* info = &attackInfos[attacker->attacks[attackChoice]];
+	string firstSpaces(30, ' ');
+	cout << firstSpaces << attacker->name << " used " << info->name << " on " << defender->name << " !\n";
+	cout << firstSpaces << defender->name << " took " << info->damage * GetWeakness(info->damageType, defender->elementalTypes)
+		<< " and " << statusNames[info->status] << " !\n";
+}
+
+static string GetStrHealth(Character* character) {
 	string cHealth;
 	for (int i = 0; i < 20; i++) {
 		if (i < 20 * character->health / character->maxHealth) {
@@ -34,48 +76,16 @@ string GetStrHealth(Character* character) {
 	return cHealth;
 }
 
-void PrintCharacters(Character* character, string spaces) {
+static void PrintCharacters(Character* character, string spaces) {
+	string cHealth = GetStrHealth(character);
 	cout << spaces << character->name << "\n";
-	cout << spaces << GetStrHealth(character);
+	cout << spaces << cHealth;
 	for (string line : *character->sprite) {
 		cout << spaces << line;
 	}
 }
 
-void PrintAttacksChoice(Character* character) {
-	string firstSpaces(30, ' ');
-	string attackName = attackInfos[character->attacks[0]].name;
-	cout << firstSpaces << "1." << attackName;
-	string secondSpaces(30 - int(attackName.length()), ' ');
-	cout << secondSpaces << "2." << attackInfos[character->attacks[1]].name << "\n";
-
-	attackName = attackInfos[character->attacks[2]].name;
-	cout << firstSpaces << "3." << attackName;
-	string thirdSpaces(30 - int(attackName.length()), ' ');
-	cout << secondSpaces << "4." << attackInfos[character->attacks[3]].name << "\n";
-}
-
-void PrintConfirmAttacks(Character* character, short playerChoice) {
-	AttackInfo* info = &attackInfos[character->attacks[playerChoice]];
-	string firstSpaces(30, ' ');
-	string attackName = attackInfos[character->attacks[playerChoice]].name;
-	cout << firstSpaces << "Your Attack: " << attackName << " !\n";
-	cout << firstSpaces << "Damages: " << info->damage 
-		 << " Type: " << damageTypeNames[info->damageType]
-		 << "Inflict: " << statusNames[info->status] << "\n";
-
-	cout << firstSpaces << "1. Confirm Attack		2.Return \n";
-}
-
-void PrintAttack(Character* attacker, Character* defender, short attackChoice) {
-	AttackInfo* info = &attackInfos[attacker->attacks[attackChoice]];
-	string firstSpaces(30, ' ');
-	cout << firstSpaces << attacker->name << " used " << info->name << " on " << defender->name <<" !\n";
-	cout << firstSpaces << defender->name << " took " << info->damage * GetWeakness(info->damageType, defender->elementalTypes) 
-		 << " and " << statusNames[info->status] <<" !\n";
-}
-
-void PrintScreen(Character* playerCharacter, Character* enemyCharacter, CurrentBattlePhase phase, short playerChoice) {
+static void PrintScreen(Character* playerCharacter, Character* enemyCharacter, CurrentBattlePhase phase, short playerChoice) {
 	system("cls");
 
 	string playerSpaces(20, ' ');
@@ -87,7 +97,7 @@ void PrintScreen(Character* playerCharacter, Character* enemyCharacter, CurrentB
 	cout << playerSpaces.substr(0, 20) << " " << container << "\n";
 
 	PrintCharacters(enemyCharacter, enemySpaces);
-	cout << playerSpaces <<"\n";
+	cout << playerSpaces << "\n";
 	PrintCharacters(playerCharacter, playerSpaces);
 	cout << playerSpaces << "\n";
 

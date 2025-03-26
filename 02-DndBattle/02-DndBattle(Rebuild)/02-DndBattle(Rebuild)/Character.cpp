@@ -21,6 +21,6 @@ Character::Character(string _name, vector<string>* _sprite, vector<DamageTypes> 
 	currentStatus = Status::None;
 }
 
-void Character::GetDamage(int damages){
+void Character::GetDamage(int damages) {
 	health -= damages;
 }
