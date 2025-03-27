@@ -27,10 +27,10 @@ public:
 
 private:
 	int UserInput();
+	void PrintCurrentPhase(int choice);
+	bool EffectsAfterAttack(Character* defender, bool isPlayer);
+	void Heal(Character* attacker, bool isPlayer);
 	void DamageCharacter(Character* defender, AttackInfo attack);
 	bool EffectsBeforeAttack(Character* attacker, bool isPlayer);
-	bool EffectsAfterAttack(Character* defender);
-	void PrintCurrentPhase(int choice);
 	void AttackCharacter(Character* attacker, Character* defender, short attackChoice);
-
 };

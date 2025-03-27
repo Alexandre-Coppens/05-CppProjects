@@ -53,7 +53,7 @@ Engine::Engine() {
 	AttackName barbarianAttacks[4]{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
 	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, barbarianAttacks, float(rand() % 50), float(450));
 
-	playerCharacters = { barbarian, rogue, wizard, barbarian};
+	playerCharacters = { knight, rogue, wizard, barbarian};
 	enemyCharacters = { skeleton, mimic, beholder, golem, lich, dragon };
 
 	currentPhase = CurrentBattlePhase::ChooseAttack;
@@ -114,8 +114,8 @@ int Engine::UserInput() {
 		}
 		cin.ignore();
 		cin.ignore();
-
-		EffectsAfterAttack(&enemyCharacters[currentActors[1]]);
+		EffectsAfterAttack(&enemyCharacters[currentActors[1]], false);
+		Heal(&playerCharacters[currentActors[0]], true);
 		return 0;
 
 	case CurrentBattlePhase::AttackEnemy:
@@ -127,7 +127,8 @@ int Engine::UserInput() {
 		cin.ignore();
 		cin.ignore();
 
-		EffectsAfterAttack(&playerCharacters[currentActors[0]]);
+		EffectsAfterAttack(&playerCharacters[currentActors[0]], true);
+		Heal(&enemyCharacters[currentActors[1]], false);
 		return 0;
 
 	default:
@@ -148,6 +149,7 @@ void Engine::AttackCharacter(Character* attacker, Character* defender, short att
 
 void Engine::DamageCharacter(Character* defender, AttackInfo attack){
 	defender->health -= attack.damage * GetWeakness(attack.damageType, defender->elementalTypes);
+	if(defender->health > defender->maxHealth) defender->health = defender->maxHealth;
 }
 
 bool Engine::EffectsBeforeAttack(Character* attacker, bool isPlayer) // Return true if attacker is successfuly paralised
@@ -158,11 +160,18 @@ bool Engine::EffectsBeforeAttack(Character* attacker, bool isPlayer) // Return t
 	if (statusList.size() == 0) return false;
 	for (int i = 0; i < statusList.size(); i++)
 	{
-		if(statusList[i] == Status::Frost) {
+		if (rand() % 3 == 0) {
+			statusList.erase(find(statusList.begin(), statusList.end(), statusList[i]));
+			i--;
+			break;
+		}
+
+		if(statusList[i] == Status::Electric) {
 			if (rand() % 4 == 0)
 			{
 				currentPhase = CurrentBattlePhase::Paralysed;
 				PrintCurrentPhase(isPlayer?0:1);
+				attacker->currentStatus = statusList;
 				return true;
 			}
 		}
@@ -172,16 +181,12 @@ bool Engine::EffectsBeforeAttack(Character* attacker, bool isPlayer) // Return t
 			i--;
 			break;
 		}
-
-		if (rand() % 3 == 0) {
-			statusList.erase(find(statusList.begin(), statusList.end(), statusList[i]));
-			i--;
-		}
 	}
+	attacker->currentStatus = statusList;
 	return ret;
 }
 
-bool Engine::EffectsAfterAttack(Character* defender)
+bool Engine::EffectsAfterAttack(Character* defender, bool isPlayer)
 {
 	vector<Status> statusList;
 	AttackInfo attack;
@@ -197,6 +202,11 @@ bool Engine::EffectsAfterAttack(Character* defender)
 			attack.status = Status::None;
 			attack.name = "Poison";
 			DamageCharacter(defender, attack);
+
+			currentPhase = CurrentBattlePhase::Poisoned;
+			PrintCurrentPhase(isPlayer ? 0 : 1);
+			cin.ignore();
+			cin.ignore();
 			break;
 
 		case Status::Burn:
@@ -205,6 +215,11 @@ bool Engine::EffectsAfterAttack(Character* defender)
 			attack.status = Status::None;
 			attack.name = "Fire";
 			DamageCharacter(defender, attack);
+
+			currentPhase = CurrentBattlePhase::Burned;
+			PrintCurrentPhase(isPlayer ? 0 : 1);
+			cin.ignore();
+			cin.ignore();
 			break;
 
 		default:
@@ -212,4 +227,33 @@ bool Engine::EffectsAfterAttack(Character* defender)
 		}
 	}
 	return true;
+}
+
+void Engine::Heal(Character* attacker, bool isPlayer)
+{
+	vector<Status> statusList;
+	AttackInfo attack;
+	statusList = attacker->currentStatus;
+	if (statusList.size() == 0) return;
+	for (int i = 0; i < statusList.size(); i++)
+	{
+		switch (statusList[i])
+		{
+		case Status::Heal:
+			attack.damageType = DamageTypes::Normal;
+			attack.damage = -(attacker->maxHealth / 20);
+			attack.status = Status::None;
+			attack.name = "Heal";
+			DamageCharacter(attacker, attack);
+			currentPhase = CurrentBattlePhase::Healed;
+			PrintCurrentPhase(isPlayer ? 0 : 1);
+			cin.ignore();
+			cin.ignore();
+			return;
+
+		default:
+			break;
+		}
+	}
+	return;
 }

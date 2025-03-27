@@ -14,6 +14,9 @@ enum class CurrentBattlePhase {
 	AttackPlayer,
 	AttackEnemy,
 	Paralysed,
+	Burned,
+	Poisoned,
+	Healed,
 	None,
 };
 
@@ -67,6 +70,24 @@ static void PrintParalysed(Character* attacker) {
 	string firstSpaces(30, ' ');
 	cout << "\n";
 	cout << firstSpaces << attacker->name << " is Paralysed, he will need time to recover!\n";
+}
+
+static void PrintHeal(Character* attacker) {
+	string firstSpaces(30, ' ');
+	cout << "\n";
+	cout << firstSpaces << attacker->name << " is Healing, he regain some portion of it's health!\n";
+}
+
+static void PrintBurn(Character* attacker) {
+	string firstSpaces(30, ' ');
+	cout << "\n";
+	cout << firstSpaces << attacker->name << " is burning, he is taking some damages!\n";
+}
+
+static void PrintPoisoned(Character* attacker) {
+	string firstSpaces(30, ' ');
+	cout << "\n";
+	cout << firstSpaces << attacker->name << " is poisoned, he is taking some damages!\n";
 }
 
 static string GetStrHealth(Character* character) {
@@ -129,6 +150,18 @@ static void PrintScreen(Character* playerCharacter, Character* enemyCharacter, C
 	case CurrentBattlePhase::Paralysed:
 		if(playerChoice == 0) PrintParalysed(playerCharacter);
 		if(playerChoice == 1) PrintParalysed(enemyCharacter);
+		break;
+	case CurrentBattlePhase::Healed:
+		if (playerChoice == 0) PrintHeal(playerCharacter);
+		if (playerChoice == 1) PrintHeal(enemyCharacter);
+		break;
+	case CurrentBattlePhase::Burned:
+		if (playerChoice == 0) PrintBurn(playerCharacter);
+		if (playerChoice == 1) PrintBurn(enemyCharacter);
+		break;
+	case CurrentBattlePhase::Poisoned:
+		if (playerChoice == 0) PrintPoisoned(playerCharacter);
+		if (playerChoice == 1) PrintPoisoned(enemyCharacter);
 		break;
 	}
 }
