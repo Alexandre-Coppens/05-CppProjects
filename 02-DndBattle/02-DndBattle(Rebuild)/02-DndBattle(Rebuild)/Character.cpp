@@ -7,14 +7,11 @@ using std::cout;
 using std::string;
 using std::vector;
 
-Character::Character(string _name, vector<string>* _sprite, vector<DamageTypes> _types, AttackName _attacks[4], float _speed, float _health) {
+Character::Character(string _name, vector<string>* _sprite, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health) {
 	name = _name;
 	sprite = _sprite;
 	elementalTypes.assign(_types.begin(), _types.end());
-	attacks[0] = _attacks[0];
-	attacks[1] = _attacks[1];
-	attacks[2] = _attacks[2];
-	attacks[3] = _attacks[3];
+	attacks.assign(_attacks.begin(), _attacks.end());
 	speed = _speed;
 	maxHealth = _health;
 	health = _health;

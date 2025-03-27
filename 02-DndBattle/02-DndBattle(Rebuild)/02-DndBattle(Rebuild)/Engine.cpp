@@ -12,45 +12,45 @@ CurrentBattlePhase currentPhase;
 Engine::Engine() {
 
 	vector<DamageTypes> dragonTypes{ DamageTypes::Lighting, DamageTypes::Normal };
-	AttackName dragonAttacks[4]{ AttackName::MoltenBreath, AttackName::LightningCall, AttackName::MightyDive, AttackName::OldMagic };
+	vector<AttackName> dragonAttacks{ AttackName::MoltenBreath, AttackName::LightningCall, AttackName::MightyDive, AttackName::OldMagic };
 	Character dragon("DRAGON", characterCreator.GetSprite(CharacterTypes::Dragon), dragonTypes, dragonAttacks, float(rand() % 50), float(1000));
 
 	vector<DamageTypes> lichTypes{ DamageTypes::Necrotic, DamageTypes::Normal };
-	AttackName lichAttacks[4]{ AttackName::Fireball, AttackName::Poison, AttackName::Lightning, AttackName::OldMagic };
+	vector<AttackName> lichAttacks{ AttackName::Fireball, AttackName::Poison, AttackName::Lightning, AttackName::OldMagic };
 	Character lich("LICH", characterCreator.GetSprite(CharacterTypes::Lich), lichTypes, lichAttacks, float(rand() % 50), float(356));
 
 	vector<DamageTypes> golemTypes{ DamageTypes::Normal, DamageTypes::Normal };
-	AttackName golemAttacks[4]{ AttackName::ThrowRock, AttackName::Slam, AttackName::HeadSmasher, AttackName::OldMagic };
+	vector<AttackName> golemAttacks{ AttackName::ThrowRock, AttackName::Slam, AttackName::HeadSmasher, AttackName::OldMagic };
 	Character golem("GOLEM", characterCreator.GetSprite(CharacterTypes::Golem), golemTypes, golemAttacks, float(rand() % 50), float(500));
 
 	vector<DamageTypes> beholderTypes{ DamageTypes::Fire, DamageTypes::Cold };
-	AttackName beholderAttacks[4]{ AttackName::IceBreath, AttackName::Stun, AttackName::Chomp, AttackName::Fireball };
+	vector<AttackName> beholderAttacks{ AttackName::IceBreath, AttackName::Stun, AttackName::Chomp, AttackName::Fireball };
 	Character beholder("BEHOLDER", characterCreator.GetSprite(CharacterTypes::Beholder), beholderTypes, beholderAttacks, float(rand() % 50), float(250));
 
 	vector<DamageTypes> mimicTypes{ DamageTypes::Lighting, DamageTypes::Piercing };
-	AttackName mimicAttacks[4]{ AttackName::Zap, AttackName::ShortCircuit, AttackName::Dive, AttackName::Triped };
+	vector<AttackName> mimicAttacks{ AttackName::Zap, AttackName::ShortCircuit, AttackName::Dive, AttackName::Triped };
 	Character mimic("MIMIC", characterCreator.GetSprite(CharacterTypes::Mimic), mimicTypes, mimicAttacks, float(rand() % 50), float(150));
 
 	vector<DamageTypes> skeletonTypes{ DamageTypes::Necrotic, DamageTypes::Slashing };
-	AttackName skeletonAttacks[4]{ AttackName::Slash, AttackName::Poison, AttackName::Triped, AttackName::Triped };
+	vector<AttackName> skeletonAttacks{ AttackName::Slash, AttackName::Poison, AttackName::Triped, AttackName::Triped };
 	Character skeleton("SKELETON", characterCreator.GetSprite(CharacterTypes::Skeleton), skeletonTypes, skeletonAttacks, float(rand() % 50), float(75));
 
 
 
 	vector<DamageTypes> knightTypes{ DamageTypes::Slashing, DamageTypes::Fire };
-	AttackName knightAttacks[4]{ AttackName::Slash, AttackName::FireSword, AttackName::Smite, AttackName::Heal };
+	vector<AttackName> knightAttacks{ AttackName::Slash, AttackName::FireSword, AttackName::Smite, AttackName::Heal };
 	Character knight("KNIGHT", characterCreator.GetSprite(CharacterTypes::Knight), knightTypes, knightAttacks, float(rand() % 50), float(500));
 
 	vector<DamageTypes> rogueTypes{ DamageTypes::Piercing, DamageTypes::Necrotic };
-	AttackName rogueAttacks[4]{ AttackName::PiercingDagger, AttackName::ShadowDagger, AttackName::Poison, AttackName::Heal };
+	vector<AttackName> rogueAttacks{ AttackName::PiercingDagger, AttackName::ShadowDagger, AttackName::Poison, AttackName::Heal };
 	Character rogue("ROGUE", characterCreator.GetSprite(CharacterTypes::Rogue), rogueTypes, rogueAttacks, float(rand() % 50), float(300));
 
 	vector<DamageTypes> wizardTypes{ DamageTypes::Lighting, DamageTypes::Fire };
-	AttackName wizardAttacks[4]{ AttackName::Fireball, AttackName::Lightning, AttackName::Poison, AttackName::Heal };
+	vector<AttackName> wizardAttacks{ AttackName::Fireball, AttackName::Lightning, AttackName::Poison, AttackName::Heal };
 	Character wizard("WIZARD", characterCreator.GetSprite(CharacterTypes::Wizard), wizardTypes, wizardAttacks, float(rand() % 50), float(250));
 
 	vector<DamageTypes> barbarianTypes{ DamageTypes::Fire, DamageTypes::Cold };
-	AttackName barbarianAttacks[4]{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
+	vector<AttackName> barbarianAttacks{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
 	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, barbarianAttacks, float(rand() % 50), float(450));
 
 	playerCharacters = { knight, rogue, wizard, barbarian};

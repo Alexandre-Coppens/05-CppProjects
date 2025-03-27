@@ -9,17 +9,26 @@ using std::vector;
 
 class Character {
 public:
+	vector<Status> currentStatus;
+
+private:
 	string name;
 	vector<string>* sprite;
 	vector<DamageTypes> elementalTypes;
-	AttackName attacks[4];
+	vector<AttackName> attacks;
 
 	float speed;
 	float health;
 	float maxHealth;
-	vector<Status> currentStatus;
 
 public:
-	Character(string _name, vector<string>* _sprite, vector<DamageTypes> _types, AttackName _attacks[4], float _speed, float _health);
+
+	Character(string _name, vector<string>* _sprite, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health);
 	void GetDamage(int damages);
+
+	const inline string GetName() { return name; }
+	const inline vector<string>* GetSprite() { return sprite; }
+	const inline vector<AttackName> GetAttacks() { return attacks; }
+	const inline vector<DamageTypes> GetElements() { return elementalTypes; }
+	
 };
