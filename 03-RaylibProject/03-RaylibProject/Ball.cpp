@@ -57,6 +57,7 @@ void Ball::CheckCollision(vector<GameObject*>* objectList){
 				position.y - radius < object->GetPosition().y + collider.sizeY) {
 				if (position.y > object->GetPosition().y && position.y < object->GetPosition().y + collider.sizeY) {
 					velocity.x = -velocity.x;
+					velocity.y += ((object->GetPosition().y + (collider.sizeY * 0.5f)) - position.y) * -0.25f;
 					velocity = Vector2{ velocity.x * 1.15f, velocity.y * 1.15f};
 				}
 				else if(position.x > object->GetPosition().x && position.x < object->GetPosition().x + collider.sizeX) {
@@ -75,5 +76,5 @@ void Ball::CheckCollision(vector<GameObject*>* objectList){
 
 void Ball::Restart() {
 	position = Vector2{ GetScreenWidth() * 0.5f, GetScreenHeight() * 0.5f };
-	velocity = Vector2{ -5.0f, (rand() % 5) - 2.5f };
+	velocity = Vector2{ -7.0f, (rand() % 5) - 2.5f };
 }

@@ -1,12 +1,17 @@
 #include <iostream>
 #include <vector>
 #include "Paddle.h"
-#include "Score.h"
-#include "Ball.h"
 
 using std::vector;
 
 Paddle::Paddle(){
+    isPlayer = false;
+    size = Vector2{ 0,0 };
+    speed = 0;
+    color = WHITE;
+    keyUp = KEY_NULL;
+    keyDown = KEY_NULL;
+    ball = NULL;
 }
 
 Paddle::Paddle(Vector2 _position, Vector2 _size, float _speed, Color _color){
@@ -17,6 +22,10 @@ Paddle::Paddle(Vector2 _position, Vector2 _size, float _speed, Color _color){
 
     isPlayer = false;
     collider = { ColliderType::Square, size.x, size.y };
+
+    keyUp = KEY_NULL;
+    keyDown = KEY_NULL;
+    ball = NULL;
 }
 
 void Paddle::AssignKeys(KeyboardKey _keyUp, KeyboardKey _keyDown){
@@ -30,19 +39,11 @@ void Paddle::Update(vector<GameObject*>* objectList){
         addYPos = KeyHold();
     }
     else{
-        for(GameObject* object : *objectList)
-        {
-            if (dynamic_cast<Ball*>(object) == nullptr) {
-                break;
-            }
-            else {
-                if (object->GetPosition().y > position.y + (size.y * 0.5f)) {
-                    addYPos++;
-                }
-                else{
-                    addYPos--;
-                }
-            }
+        if (ball->GetPosition().y > position.y + (size.y * 0.5f)) {
+            addYPos++;
+        }
+        else{
+            addYPos--;
         }
     }
     if (addYPos < 0 && position.y <= 0) {
