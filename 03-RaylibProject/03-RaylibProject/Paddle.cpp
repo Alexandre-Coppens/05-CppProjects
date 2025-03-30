@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "Ball.h"
 #include "Paddle.h"
 
 using std::vector;
@@ -8,16 +9,17 @@ Paddle::Paddle(){
     isPlayer = false;
     size = Vector2{ 0,0 };
     speed = 0;
-    color = WHITE;
+    texture = nullptr;
     keyUp = KEY_NULL;
     keyDown = KEY_NULL;
     ball = NULL;
 }
 
-Paddle::Paddle(Vector2 _position, Vector2 _size, float _speed, Color _color){
+Paddle::Paddle(Vector2 _position, Vector2 _size, float _speed, Texture2D* _texture, Color _color){
     position = _position;
     size = _size;
     speed = _speed;
+    texture = _texture;
     color = _color;
 
     isPlayer = false;
@@ -31,6 +33,12 @@ Paddle::Paddle(Vector2 _position, Vector2 _size, float _speed, Color _color){
 void Paddle::AssignKeys(KeyboardKey _keyUp, KeyboardKey _keyDown){
     keyUp = _keyUp;
     keyDown = _keyDown;
+}
+
+void Paddle::AssignBall(GameObject* _ball){
+    if (dynamic_cast<Ball*>(_ball) != nullptr) {
+        ball = _ball;
+    }
 }
 
 void Paddle::Update(vector<GameObject*>* objectList){
@@ -58,8 +66,7 @@ void Paddle::Update(vector<GameObject*>* objectList){
 }
 
 void Paddle::Draw(){
-    Vector2 newPos{ position.x,position.y};
-    DrawRectangleV(newPos, size, color);
+    DrawTextureV(*texture, position, color);
 }
 
 int Paddle::KeyHold(){

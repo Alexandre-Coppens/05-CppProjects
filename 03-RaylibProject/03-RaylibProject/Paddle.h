@@ -1,7 +1,5 @@
 #pragma once
-#include "raylib.h"
 #include "GameObject.h"
-#include "Ball.h"
 #include <string>
 
 using std::string;
@@ -13,18 +11,20 @@ private:
 	Vector2 size;
 
 	float speed;
-	Color color;
 
 	KeyboardKey keyUp;
 	KeyboardKey keyDown;
 
-	Ball* ball;
+	GameObject* ball;
+
+	Texture2D* texture;
+	Color color;
 
 public:
 	Paddle();
-	Paddle(Vector2 _position, Vector2 _size, float _speed, Color _color);
+	Paddle(Vector2 _position, Vector2 _size, float _speed, Texture2D* _texture, Color _color);
 	void AssignKeys(KeyboardKey _keyUp, KeyboardKey _keyDown);
-	const inline void  AssignBall(Ball* _ball) { ball = _ball;}
+	void  AssignBall(GameObject* _ball);
 
 	const inline void SetPlayer() { isPlayer = true; }
 	const inline void AddSpeed() { speed += 2; }

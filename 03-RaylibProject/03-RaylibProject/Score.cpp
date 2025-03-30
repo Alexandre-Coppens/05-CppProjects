@@ -1,15 +1,19 @@
 #include "Score.h"
 
 Score::Score(){
+	position = Vector2{ 0,0 };
+	size = 0;
+	color = WHITE;
+	score = 0;
+	font = NULL;
 }
 
-Score::Score(Vector2 _position, int _size, Font* _font,Color _color, Paddle* _paddle){
+Score::Score(Vector2 _position, int _size, Font* _font,Color _color){
 	position = _position;
 	size = _size;
 	color = _color;
 	score = 0;
 	font = _font;
-	paddle = _paddle;
 }
 
 Score::~Score(){
@@ -24,6 +28,5 @@ void Score::Draw(){
 }
 
 void Score::AddScore(){
-	score++; 
-	if(paddle)paddle->AddSpeed();
+	score++;
 }

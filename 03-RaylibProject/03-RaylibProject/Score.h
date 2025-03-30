@@ -1,7 +1,5 @@
 #pragma once
 #include "GameObject.h"
-#include "Score.h"
-#include "Paddle.h"
 
 class Score : public GameObject {
 private:
@@ -10,13 +8,11 @@ private:
 
 	Font* font;
 
-	Paddle* paddle;
-
 	Color color;
 
 public:
 	Score();
-	Score(Vector2 _position, int _size, Font* font, Color _color, Paddle* _paddle);
+	Score(Vector2 _position, int _size, Font* font, Color _color);
 	~Score();
 
 	void Update(vector<GameObject*>* objectList) override;

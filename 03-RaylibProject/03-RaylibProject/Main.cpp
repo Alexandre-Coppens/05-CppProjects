@@ -14,8 +14,11 @@ void End();
 
 void ChangeScene();
 void LoadGameScene();
+void LoadMenuScene();
 
 Texture2D background;
+Texture2D logoDvd;
+Texture2D cardboardBox;
 Font textFont;
 Music music;
 
@@ -38,12 +41,18 @@ void Start(){
     SetTargetFPS(60);
     InitAudioDevice();
 
-    Image img = LoadImage("resources/background.png");
+    Image imgBkrgd = LoadImage("resources/background.png");
+    Image imgDvd = LoadImage("resources/Logo-Dvd.png");
+    Image imgBox = LoadImage("resources/Cardboard-Box.png");
     textFont = LoadFont("resources/fonts/mecha.png");
     music = LoadMusicStream("resources/balatro.mp3");
 
-    background = LoadTextureFromImage(img);
-    UnloadImage(img);
+    background = LoadTextureFromImage(imgBkrgd);
+    logoDvd = LoadTextureFromImage(imgDvd);
+    cardboardBox = LoadTextureFromImage(imgBox);
+    UnloadImage(imgBkrgd);
+    UnloadImage(imgDvd );
+    UnloadImage(imgBox );
 
     SetMusicVolume(music, 2);
     PlayMusicStream(music);
@@ -56,22 +65,30 @@ void ChangeScene() {
     case Scenes::Game:
         LoadGameScene();
         break;
+    case Scenes::MainMenu:
+        LoadMenuScene();
+        break;
     }
 }
 
 void LoadGameScene(){
     gameObjectList.clear();
-    ball = { Vector2{GetScreenWidth() * 0.5f, GetScreenHeight() * 0.5f}, 5.0f, Vector2{5.0f, 4.0f}, WHITE };
-    player = { Vector2{100.0f, GetScreenHeight() * 0.5f}, Vector2{20.0f, 60.0f}, 20.0f, BEIGE };
+    ball = { Vector2{GetScreenWidth() * 0.5f, GetScreenHeight() * 0.5f}, 25.0f, Vector2{5.0f, 4.0f}, &logoDvd };
+    player = { Vector2{100.0f, GetScreenHeight() * 0.5f}, Vector2{20.0f, 60.0f}, 20.0f, &cardboardBox, WHITE };
     player.SetPlayer();
     player.AssignKeys(KEY_UP, KEY_DOWN);
-    enemy = { Vector2{650.0f, GetScreenHeight() * 0.5f}, Vector2{20.0f, 60.0f}, 5.0f, DARKBLUE };
+    enemy = { Vector2{650.0f, GetScreenHeight() * 0.5f}, Vector2{20.0f, 60.0f}, 5.0f, &cardboardBox, DARKBLUE };
     enemy.AssignBall(&ball);
-    pScore = { Vector2{200.0f, 50}, 50, &textFont, BEIGE, nullptr};
-    eScore = { Vector2{550.0f, 50}, 50, &textFont, DARKBLUE, &enemy };
+    pScore = { Vector2{200.0f, 50}, 50, &textFont, BEIGE};
+    eScore = { Vector2{550.0f, 50}, 50, &textFont, DARKBLUE };
     ball.SetScore(&pScore, &eScore);
+    ball.SetPaddle(&enemy);
 
     gameObjectList = { &pScore, &eScore, &ball, &player, &enemy};
+}
+
+void LoadMenuScene() {
+
 }
 
 void Update(){
@@ -84,7 +101,7 @@ void Update(){
 void Draw(){
     BeginDrawing();
     ClearBackground(BLACK);
-    DrawTextureEx(background, Vector2{ 0,0 }, 0, 0.55f, WHITE);
+    if(currentScene == Scenes::Game)DrawTextureEx(background, Vector2{ 0,0 }, 0, 0.55f, WHITE);
     
     for (GameObject* object : gameObjectList) {
         object->Draw();
