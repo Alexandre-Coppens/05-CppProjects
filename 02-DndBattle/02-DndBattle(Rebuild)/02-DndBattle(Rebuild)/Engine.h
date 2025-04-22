@@ -30,6 +30,7 @@ private:
 	void PrintCurrentPhase(int choice);
 	bool EffectsAfterAttack(Character* defender, bool isPlayer);
 	void Heal(Character* attacker, bool isPlayer);
+	void CheckDeath();
 	void DamageCharacter(Character* defender, AttackInfo attack);
 	bool EffectsBeforeAttack(Character* attacker, bool isPlayer);
 	void AttackCharacter(Character* attacker, Character* defender, short attackChoice);

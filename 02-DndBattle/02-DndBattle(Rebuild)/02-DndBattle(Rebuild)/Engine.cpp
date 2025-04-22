@@ -83,6 +83,7 @@ void Engine::Update() {
 		currentPhase = CurrentBattlePhase::AttackPlayer;
 		UserInput();
 	}
+	CheckDeath();
 }
 
 int Engine::UserInput() {
@@ -256,4 +257,35 @@ void Engine::Heal(Character* attacker, bool isPlayer)
 		}
 	}
 	return;
+}
+
+void Engine::CheckDeath()
+{
+	if (enemyCharacters[currentActors[1]].health <= 0) {
+		currentPhase = CurrentBattlePhase::Died;
+		PrintCurrentPhase(0);
+		cin.ignore();
+		cin.ignore();
+		currentActors[1]++;
+		if (currentActors[1] == enemyCharacters.size()) {
+			system("cls");
+			cout << "                     YOU WIN! \n";
+			cin.ignore();
+			void CloseWindow(void);
+		}
+	}
+	else if (playerCharacters[currentActors[0]].health <= 0)
+	{
+		currentPhase = CurrentBattlePhase::Died;
+		PrintCurrentPhase(1);
+		cin.ignore();
+		cin.ignore();
+		currentActors[0]++;
+		if (currentActors[0] == playerCharacters.size()) {
+			system("cls");
+			cout << "                     GAME OVER \n";
+			cin.ignore();
+			void CloseWindow(void);
+		}
+	}
 }

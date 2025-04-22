@@ -10,8 +10,6 @@ using std::vector;
 class Character {
 public:
 	vector<Status> currentStatus;
-
-private:
 	string name;
 	vector<string>* sprite;
 	vector<DamageTypes> elementalTypes;

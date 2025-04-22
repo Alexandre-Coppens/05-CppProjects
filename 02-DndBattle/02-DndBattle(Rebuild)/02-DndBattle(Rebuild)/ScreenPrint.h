@@ -17,6 +17,7 @@ enum class CurrentBattlePhase {
 	Burned,
 	Poisoned,
 	Healed,
+	Died,
 	None,
 };
 
@@ -88,6 +89,12 @@ static void PrintPoisoned(Character* attacker) {
 	string firstSpaces(30, ' ');
 	cout << "\n";
 	cout << firstSpaces << attacker->name << " is poisoned, he is taking some damages!\n";
+}
+
+static void PrintDied(Character* deadCharacter) {
+	string firstSpaces(30, ' ');
+	cout << "\n";
+	cout << firstSpaces << deadCharacter->name << " is dead.. Changing to next character..\n";
 }
 
 static string GetStrHealth(Character* character) {
@@ -162,6 +169,10 @@ static void PrintScreen(Character* playerCharacter, Character* enemyCharacter, C
 	case CurrentBattlePhase::Poisoned:
 		if (playerChoice == 0) PrintPoisoned(playerCharacter);
 		if (playerChoice == 1) PrintPoisoned(enemyCharacter);
+		break;
+	case CurrentBattlePhase::Died:
+		if (playerChoice == 1) PrintDied(playerCharacter);
+		if (playerChoice == 0) PrintDied(enemyCharacter);
 		break;
 	}
 }
