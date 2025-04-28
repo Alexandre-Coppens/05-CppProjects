@@ -1,59 +1,63 @@
-#include <iostream>
-#include "Character.h"
-#include "ScreenPrint.h"
 #include "Engine.h"
+#include "AssetsList.h"
+#include "ScreenDraw.h"
 #include "Elements.h"
 
 using std::cin;
 using std::cout;
-
 CurrentBattlePhase currentPhase;
 
+AssetList* assets = AssetList::getInstance();
+
 Engine::Engine() {
+}
+
+void Engine::Start(){
+	assets = AssetList::getInstance();
 
 	vector<DamageTypes> dragonTypes{ DamageTypes::Lighting, DamageTypes::Normal };
 	vector<AttackName> dragonAttacks{ AttackName::MoltenBreath, AttackName::LightningCall, AttackName::MightyDive, AttackName::OldMagic };
-	Character dragon("DRAGON", characterCreator.GetSprite(CharacterTypes::Dragon), dragonTypes, dragonAttacks, float(rand() % 50), float(1000));
+	Character dragon("DRAGON", assets->SpriteList["imgCharBasic"], dragonTypes, dragonAttacks, float(rand() % 50), float(1000));
 
 	vector<DamageTypes> lichTypes{ DamageTypes::Necrotic, DamageTypes::Normal };
 	vector<AttackName> lichAttacks{ AttackName::Fireball, AttackName::Poison, AttackName::Lightning, AttackName::OldMagic };
-	Character lich("LICH", characterCreator.GetSprite(CharacterTypes::Lich), lichTypes, lichAttacks, float(rand() % 50), float(356));
+	Character lich("LICH", assets->SpriteList["imgCharBasic"], lichTypes, lichAttacks, float(rand() % 50), float(356));
 
 	vector<DamageTypes> golemTypes{ DamageTypes::Normal, DamageTypes::Normal };
 	vector<AttackName> golemAttacks{ AttackName::ThrowRock, AttackName::Slam, AttackName::HeadSmasher, AttackName::OldMagic };
-	Character golem("GOLEM", characterCreator.GetSprite(CharacterTypes::Golem), golemTypes, golemAttacks, float(rand() % 50), float(500));
+	Character golem("GOLEM", assets->SpriteList["imgCharBasic"], golemTypes, golemAttacks, float(rand() % 50), float(500));
 
 	vector<DamageTypes> beholderTypes{ DamageTypes::Fire, DamageTypes::Cold };
 	vector<AttackName> beholderAttacks{ AttackName::IceBreath, AttackName::Stun, AttackName::Chomp, AttackName::Fireball };
-	Character beholder("BEHOLDER", characterCreator.GetSprite(CharacterTypes::Beholder), beholderTypes, beholderAttacks, float(rand() % 50), float(250));
+	Character beholder("BEHOLDER", assets->SpriteList["imgCharBasic"], beholderTypes, beholderAttacks, float(rand() % 50), float(250));
 
 	vector<DamageTypes> mimicTypes{ DamageTypes::Lighting, DamageTypes::Piercing };
 	vector<AttackName> mimicAttacks{ AttackName::Zap, AttackName::ShortCircuit, AttackName::Dive, AttackName::Triped };
-	Character mimic("MIMIC", characterCreator.GetSprite(CharacterTypes::Mimic), mimicTypes, mimicAttacks, float(rand() % 50), float(150));
+	Character mimic("MIMIC", assets->SpriteList["imgCharBasic"], mimicTypes, mimicAttacks, float(rand() % 50), float(150));
 
 	vector<DamageTypes> skeletonTypes{ DamageTypes::Necrotic, DamageTypes::Slashing };
 	vector<AttackName> skeletonAttacks{ AttackName::Slash, AttackName::Poison, AttackName::Triped, AttackName::Triped };
-	Character skeleton("SKELETON", characterCreator.GetSprite(CharacterTypes::Skeleton), skeletonTypes, skeletonAttacks, float(rand() % 50), float(75));
+	Character skeleton("SKELETON", assets->SpriteList["imgCharBasic"], skeletonTypes, skeletonAttacks, float(rand() % 50), float(75));
 
 
 
 	vector<DamageTypes> knightTypes{ DamageTypes::Slashing, DamageTypes::Fire };
 	vector<AttackName> knightAttacks{ AttackName::Slash, AttackName::FireSword, AttackName::Smite, AttackName::Heal };
-	Character knight("KNIGHT", characterCreator.GetSprite(CharacterTypes::Knight), knightTypes, knightAttacks, float(rand() % 50), float(500));
+	Character knight("KNIGHT", assets->SpriteList["imgCharBasic"], knightTypes, knightAttacks, float(rand() % 50), float(500));
 
 	vector<DamageTypes> rogueTypes{ DamageTypes::Piercing, DamageTypes::Necrotic };
 	vector<AttackName> rogueAttacks{ AttackName::PiercingDagger, AttackName::ShadowDagger, AttackName::Poison, AttackName::Heal };
-	Character rogue("ROGUE", characterCreator.GetSprite(CharacterTypes::Rogue), rogueTypes, rogueAttacks, float(rand() % 50), float(300));
+	Character rogue("ROGUE", assets->SpriteList["imgCharBasic"], rogueTypes, rogueAttacks, float(rand() % 50), float(300));
 
 	vector<DamageTypes> wizardTypes{ DamageTypes::Lighting, DamageTypes::Fire };
 	vector<AttackName> wizardAttacks{ AttackName::Fireball, AttackName::Lightning, AttackName::Poison, AttackName::Heal };
-	Character wizard("WIZARD", characterCreator.GetSprite(CharacterTypes::Wizard), wizardTypes, wizardAttacks, float(rand() % 50), float(250));
+	Character wizard("WIZARD", assets->SpriteList["imgCharBasic"], wizardTypes, wizardAttacks, float(rand() % 50), float(250));
 
 	vector<DamageTypes> barbarianTypes{ DamageTypes::Fire, DamageTypes::Cold };
 	vector<AttackName> barbarianAttacks{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
-	Character barbarian("BARBARIAN", characterCreator.GetSprite(CharacterTypes::Barbarian), barbarianTypes, barbarianAttacks, float(rand() % 50), float(450));
+	Character barbarian("BARBARIAN", assets->SpriteList["imgCharBasic"], barbarianTypes, barbarianAttacks, float(rand() % 50), float(450));
 
-	playerCharacters = { knight, rogue, wizard, barbarian};
+	playerCharacters = { knight, rogue, wizard, barbarian };
 	enemyCharacters = { skeleton, mimic, beholder, golem, lich, dragon };
 
 	currentPhase = CurrentBattlePhase::ChooseAttack;
@@ -199,7 +203,7 @@ bool Engine::EffectsAfterAttack(Character* defender, bool isPlayer)
 		{
 		case Status::Poisoned:
 			attack.damageType = DamageTypes::Necrotic;
-			attack.damage = defender->maxHealth / 20;
+			attack.damage = (int)(defender->maxHealth / 20);
 			attack.status = Status::None;
 			attack.name = "Poison";
 			DamageCharacter(defender, attack);
@@ -212,7 +216,7 @@ bool Engine::EffectsAfterAttack(Character* defender, bool isPlayer)
 
 		case Status::Burn:
 			attack.damageType = DamageTypes::Fire;
-			attack.damage = defender->maxHealth / 20;
+			attack.damage = (int)(defender->maxHealth / 20);
 			attack.status = Status::None;
 			attack.name = "Fire";
 			DamageCharacter(defender, attack);
@@ -242,7 +246,7 @@ void Engine::Heal(Character* attacker, bool isPlayer)
 		{
 		case Status::Heal:
 			attack.damageType = DamageTypes::Normal;
-			attack.damage = -(attacker->maxHealth / 20);
+			attack.damage = -(int)(attacker->maxHealth / 20);
 			attack.status = Status::None;
 			attack.name = "Heal";
 			DamageCharacter(attacker, attack);

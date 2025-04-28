@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include "Character.h"
-#include "CharacterTypes.h"
 
 using std::string;
 using std::vector;
@@ -13,8 +12,6 @@ private:
 	vector<Character> playerCharacters;
 	vector<Character> enemyCharacters;
 
-	CharacterType characterCreator;
-
 	short pattack;
 	short eattack;
 	short input;
@@ -23,6 +20,7 @@ private:
 
 public:
 	Engine();
+	void Start();
 	void Update();
 
 private:

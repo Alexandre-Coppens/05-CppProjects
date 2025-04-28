@@ -4,10 +4,13 @@
 #include <string>
 #include "Raylib.h"
 #include "Character.h"
+#include "AssetsList.h"
 
 using std::cout;
 using std::cin;
 using std::string;
+
+AssetList* assets = AssetList::getInstance();
 
 enum class CurrentBattlePhase {
 	ChooseAttack,
@@ -116,23 +119,28 @@ static string GetStrHealth(Character* character) {
 }
 
 static void DrawCharacters(Character* character, Vector2 position) {
-	DrawText(character->name.c_str(), position.x, position.y - 40, 20, WHITE);
-	DrawRectangle( position.x, position.y - 15, (character->health * 150)/character->maxHealth, 10, WHITE);
+	DrawText(character->name.c_str(), (int)position.x, (int)position.y - 40, 20, WHITE);
+	DrawRectangle((int)position.x, (int)position.y - 15, (int)((character->health * 150)/character->maxHealth), 10, WHITE);
 	for (Status status : character->currentStatus){
 		switch (status)
 		{
 		case Status::Poisoned:
-			DrawTextureV(*character->sprite, position, WHIE);
+			DrawTextureV(*assets->SpriteList["Poison"], position, WHITE);
 			break;
 		case Status::Frost:
+			DrawTextureV(*assets->SpriteList["Iced"], position, WHITE);
 			break;
 		case Status::Burn:
+			DrawTextureV(*assets->SpriteList["Flames"], position, WHITE);
 			break;
 		case Status::Electric:
+			DrawTextureV(*assets->SpriteList["Paralysis"], position, WHITE);
 			break;
 		case Status::Heal:
+			DrawTextureV(*assets->SpriteList["Heal"], position, WHITE);
 			break;
 		case Status::None:
+			DrawTextureV(*assets->SpriteList["Unknown"], position, WHITE);
 			break;
 		default:
 			break;
@@ -184,13 +192,6 @@ static void PrintScreen(Character* playerCharacter, Character* enemyCharacter, C
 		if (playerChoice == 1) PrintDied(playerCharacter);
 		if (playerChoice == 0) PrintDied(enemyCharacter);
 		break;
-	}
-
-	
-	if (currentScene == Scenes::Game)DrawTextureEx(background, Vector2{ 0,0 }, 0, 0.55f, WHITE);
-
-	for (GameObject* object : gameObjectList) {
-		object->Draw();
 	}
 
 	EndDrawing();
