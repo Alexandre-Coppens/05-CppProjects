@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "Character.h"
+#include "AssetsList.h"
 
 using std::string;
 using std::vector;
@@ -11,6 +12,8 @@ class Engine {
 private:
 	vector<Character> playerCharacters;
 	vector<Character> enemyCharacters;
+
+	AssetList* assets;
 
 	short pattack;
 	short eattack;

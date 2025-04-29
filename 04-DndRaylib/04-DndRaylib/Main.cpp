@@ -1,16 +1,13 @@
-#include <iostream>
 #include <string>
 #include "Engine.h"
 #include "AssetsList.h"
 
 using std::string;
-
-AssetList assets;
 Engine engine;
 
 int main()
 {
-    InitWindow(800, 500, "Raylib");
+    InitWindow(550, 500, "Raylib");
     SetTargetFPS(60);
 
     InitAudioDevice();
