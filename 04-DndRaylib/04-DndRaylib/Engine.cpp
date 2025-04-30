@@ -2,6 +2,8 @@
 #include "ScreenDraw.h"
 #include "Elements.h"
 
+#include "Button.h"
+
 CurrentBattlePhase currentPhase;
 
 Engine::Engine() {
@@ -55,6 +57,11 @@ void Engine::Start(){
 	playerCharacters = { knight, rogue, wizard, barbarian };
 	enemyCharacters = { skeleton, mimic, beholder, golem, lich, dragon };
 
+	GameObject::CreateGameObject("GOBtnAttack1", new Button(false, Vector2{50,375}, Vector2{150, 50}, &assets->SpriteList["imgUIButton"], 1));
+	GameObject::CreateGameObject("GOBtnAttack2", new Button(false, Vector2{ 275,375 }, Vector2{ 150, 50 }, &assets->SpriteList["imgUIButton"], 2));
+	GameObject::CreateGameObject("GOBtnAttack3", new Button(false, Vector2{ 50,475 }, Vector2{ 150, 50 }, &assets->SpriteList["imgUIButton"], 3));
+	GameObject::CreateGameObject("GOBtnAttack4", new Button(false, Vector2{ 275,475 }, Vector2{ 150, 50 }, &assets->SpriteList["imgUIButton"], 4));
+
 	currentPhase = CurrentBattlePhase::ChooseAttack;
 	input = 0;
 	pattack = 0;
@@ -90,8 +97,11 @@ int Engine::UserInput() {
 	{
 	case CurrentBattlePhase::ChooseAttack:
 		do {
+			BeginDrawing();
 			choice = 0;
 			PrintCurrentPhase(0);
+			WaitForPlayerInput();
+			EndDrawing();
 		} while (choice < 1 || choice > 4);
 		return choice - 1;
 
@@ -131,6 +141,27 @@ void Engine::PrintCurrentPhase(int choice) {
 	DrawScreen(&playerCharacters[currentActors[0]], &enemyCharacters[currentActors[1]], currentPhase, choice);
 }
 
+int Engine::WaitForPlayerInput() {
+	vector<GameObject*> buttons = GameObject::GetAllGameObjectsWith(GameObjectType::Button);
+
+	for (int i = 0; i < 4; i++) {
+		Button* b = dynamic_cast<Button*>(buttons[i]);
+		b->text = attackInfos[playerCharacters[currentActors[0]].attacks[i]].name;
+		b->Draw();
+	}
+	EndDrawing();
+	while (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+	}
+	Vector2 mousePos = GetMousePosition();
+
+	for (GameObject* x : buttons) {
+		if (Button* button = static_cast<Button*>(x)) {
+			if (button->IsCursorInBounds())return button->value;
+		}
+	}
+	return 0;
+}
+
 void Engine::AttackCharacter(Character* attacker, Character* defender, short attackChoice) {
 	AttackInfo info = attackInfos[attacker->attacks[attackChoice]];
 	DamageCharacter(defender, info);
@@ -143,8 +174,7 @@ void Engine::DamageCharacter(Character* defender, AttackInfo attack){
 	if(defender->health > defender->maxHealth) defender->health = defender->maxHealth;
 }
 
-bool Engine::EffectsBeforeAttack(Character* attacker, bool isPlayer) // Return true if attacker is successfuly paralised
-{
+bool Engine::EffectsBeforeAttack(Character* attacker, bool isPlayer){ // Return true if attacker is successfuly paralised{
 	vector<Status> statusList;
 	statusList = attacker->currentStatus;
 	bool ret = false;

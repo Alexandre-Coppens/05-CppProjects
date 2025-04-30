@@ -1,13 +1,12 @@
 #include <iostream>
-#include <string>
-#include <vector>
 #include "Character.h"
 
-using std::cout;
-using std::string;
-using std::vector;
-
 Character::Character(string _name, Texture2D* _sprite, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health) {
+	enabled = false;
+	position = Vector2{ 0,0 };
+	size = Vector2{ 0,0 };
+	type = GameObjectType::Character;
+
 	name = _name;
 	sprite = _sprite;
 	elementalTypes.assign(_types.begin(), _types.end());
@@ -16,6 +15,11 @@ Character::Character(string _name, Texture2D* _sprite, vector<DamageTypes> _type
 	maxHealth = _health;
 	health = _health;
 	currentStatus = {};
+
+	GameObjectList[name] = this;
+}
+
+Character::~Character(){
 }
 
 void Character::GetDamage(int damages) {

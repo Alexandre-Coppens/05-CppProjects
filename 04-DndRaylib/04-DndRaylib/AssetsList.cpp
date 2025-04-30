@@ -11,8 +11,9 @@ AssetList::AssetList() {
     LoadTexture2D("imgEffIced", "resources/Iced.png");
     LoadTexture2D("imgEffFlames", "resources/Flames.png");
     LoadTexture2D("imgCharBasic", "resources/Character.png");
-    LoadTexture2D("imgUnknown", "resources/Unknown.png");
-    LoadTexture2D("Heal", "resources/Heal.png");
+    LoadTexture2D("", "resources/Unknown.png");
+    LoadTexture2D("imgEffHeal", "resources/Heal.png");
+    LoadTexture2D("imgUIButton", "resources/Button.png");
 
     textFont = LoadFont("resources/fonts/alagard.png");
     music = LoadMusicStream("resources/balatro.mp3");

@@ -106,7 +106,6 @@ static void DrawCharacters(Character* character, Vector2 position) {
 }
 
 static void DrawScreen(Character* playerCharacter, Character* enemyCharacter, CurrentBattlePhase phase, short playerChoice) {
-	BeginDrawing();
 	ClearBackground(GRAY);
 
 	DrawCharacters(enemyCharacter, Vector2{350, 100});
@@ -133,6 +132,4 @@ static void DrawScreen(Character* playerCharacter, Character* enemyCharacter, Cu
 	case CurrentBattlePhase::Died:
 		break;
 	}
-
-	EndDrawing();
 }

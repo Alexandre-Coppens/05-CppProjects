@@ -29,6 +29,7 @@ public:
 private:
 	int UserInput();
 	void PrintCurrentPhase(int choice);
+	int WaitForPlayerInput();
 	bool EffectsAfterAttack(Character* defender, bool isPlayer);
 	void Heal(Character* attacker, bool isPlayer);
 	void CheckDeath();

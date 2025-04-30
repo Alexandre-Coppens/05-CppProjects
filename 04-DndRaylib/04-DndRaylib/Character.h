@@ -2,17 +2,13 @@
 
 #include <string>
 #include <vector>
+#include "GameObject.h"
 #include "Elements.h"
 #include "Raylib.h"
 
-using std::string;
-using std::vector;
-
-class Character {
+class Character : public GameObject {
 public:
 	vector<Status> currentStatus;
-	string name;
-	Texture2D* sprite;
 	vector<DamageTypes> elementalTypes;
 	vector<AttackName> attacks;
 
@@ -21,8 +17,8 @@ public:
 	float maxHealth;
 
 public:
-
 	Character(string _name, Texture2D* _sprite, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health);
+	virtual ~Character();
 	void GetDamage(int damages);
 
 	const inline string GetName() { return name; }
