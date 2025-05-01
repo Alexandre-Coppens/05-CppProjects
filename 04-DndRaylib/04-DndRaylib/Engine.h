@@ -25,6 +25,7 @@ public:
 	Engine();
 	void Start();
 	void Update();
+	void Draw();
 
 private:
 	int UserInput();

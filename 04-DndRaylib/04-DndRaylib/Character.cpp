@@ -16,7 +16,7 @@ Character::Character(string _name, Texture2D* _sprite, vector<DamageTypes> _type
 	health = _health;
 	currentStatus = {};
 
-	GameObjectList[name] = this;
+	CreateRect();
 }
 
 Character::~Character(){

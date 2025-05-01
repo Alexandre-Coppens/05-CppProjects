@@ -33,8 +33,13 @@ public:
     GameObject();
     GameObject(bool _enabled, string _name, Vector2 _pos, Vector2 _size, Texture2D* _sprite, GameObjectType _type);
     virtual ~GameObject();
+
+    virtual void Update();
+    virtual void Draw();
+
     bool IsCursorInBounds();
     void CreateRect();
     static void CreateGameObject(const string id, GameObject* gO);
+    static vector<GameObject*> GetAllGameObjects();
     static vector<GameObject*> GetAllGameObjectsWith(GameObjectType type);
 };

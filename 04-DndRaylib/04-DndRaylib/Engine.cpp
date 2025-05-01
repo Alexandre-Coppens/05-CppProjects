@@ -57,6 +57,11 @@ void Engine::Start(){
 	playerCharacters = { knight, rogue, wizard, barbarian };
 	enemyCharacters = { skeleton, mimic, beholder, golem, lich, dragon };
 
+	playerCharacters[0].enabled = true;
+	enemyCharacters[0].enabled = true;
+
+	Mettre dans les enfants de go un appel de la fctn vide créatrice av de placer les variables puis créer l'objet à l'intérieur des enfants comme ci-dessous
+
 	GameObject::CreateGameObject("GOBtnAttack1", new Button(false, Vector2{50,375}, Vector2{150, 50}, &assets->SpriteList["imgUIButton"], 1));
 	GameObject::CreateGameObject("GOBtnAttack2", new Button(false, Vector2{ 275,375 }, Vector2{ 150, 50 }, &assets->SpriteList["imgUIButton"], 2));
 	GameObject::CreateGameObject("GOBtnAttack3", new Button(false, Vector2{ 50,475 }, Vector2{ 150, 50 }, &assets->SpriteList["imgUIButton"], 3));
@@ -69,7 +74,7 @@ void Engine::Start(){
 }
 
 void Engine::Update() {
-	do {
+	/*do {
 		currentPhase = CurrentBattlePhase::ChooseAttack;
 		pattack = UserInput();
 		currentPhase = CurrentBattlePhase::ConfirmAttack;
@@ -88,7 +93,22 @@ void Engine::Update() {
 		currentPhase = CurrentBattlePhase::AttackPlayer;
 		UserInput();
 	}
-	CheckDeath();
+	CheckDeath();*/
+	vector<GameObject*> goList = GameObject::GetAllGameObjects();
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+		for (GameObject* go : goList) {
+			bool test = go->IsCursorInBounds();
+		}
+	}
+}
+
+void Engine::Draw(){
+	BeginDrawing();
+	vector<GameObject*> goList = GameObject::GetAllGameObjects();
+	for (GameObject* go : goList) {
+		go->Draw();
+	}
+	EndDrawing();
 }
 
 int Engine::UserInput() {
@@ -97,11 +117,9 @@ int Engine::UserInput() {
 	{
 	case CurrentBattlePhase::ChooseAttack:
 		do {
-			BeginDrawing();
 			choice = 0;
 			PrintCurrentPhase(0);
 			WaitForPlayerInput();
-			EndDrawing();
 		} while (choice < 1 || choice > 4);
 		return choice - 1;
 

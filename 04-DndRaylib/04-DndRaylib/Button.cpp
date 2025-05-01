@@ -29,6 +29,6 @@ Button::~Button(){
 }
 
 void Button::Draw(){
-	DrawTextureRec(*sprite, rect, position, WHITE);
+	GameObject::Draw();
 	DrawTextPro(AssetList::textFont, text.c_str(), position, Vector2{ 0,0 }, 0, 20, 5, BLACK);
 }

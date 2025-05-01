@@ -25,7 +25,16 @@ GameObject::GameObject(bool _enabled, string _name, Vector2 _pos, Vector2 _size,
 GameObject::~GameObject(){
 }
 
+void GameObject::Update() {
+}
+
+void GameObject::Draw() {
+	if (!enabled)return;
+	DrawTextureRec(*sprite, rect, position, WHITE);
+}
+
 bool GameObject::IsCursorInBounds(){
+	if (!enabled)return false;
 	return GetMouseX() >= position.x && GetMouseX() <= position.x + size.x && GetMouseY() >= position.y && GetMouseY() <= position.y + size.y;
 }
 
@@ -39,6 +48,15 @@ void GameObject::CreateRect(){
 void GameObject::CreateGameObject(const string id, GameObject* gO){
 	gO->name = id;
 	GameObjectList[id] = gO;
+}
+
+vector<GameObject*> GameObject::GetAllGameObjects()
+{
+	vector<GameObject*> ret;
+	for (auto const& i : GameObjectList) {
+		ret.push_back(const_cast<GameObject*>(i.second));
+	}
+	return ret;
 }
 
 vector<GameObject*> GameObject::GetAllGameObjectsWith(GameObjectType type){
