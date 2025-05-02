@@ -2,17 +2,14 @@
 #include "AssetsList.h"
 
 Button::Button() {
-	enabled = false;
-	name = "";
-	position = Vector2{ 0,0 };
-	size = Vector2{ 0,0 };
-	sprite = nullptr;
+	GameObject::GameObject();
 	value = 0;
 	text = "";
 	type = GameObjectType::None;
 }
 
 Button::Button(bool _enabled, Vector2 _pos, Vector2 _size, Texture2D* _sprite, int _value){
+	GameObject::GameObject();
 	enabled = _enabled;
 	position = _pos;
 	size = _size;
@@ -30,5 +27,10 @@ Button::~Button(){
 
 void Button::Draw(){
 	GameObject::Draw();
-	DrawTextPro(AssetList::textFont, text.c_str(), position, Vector2{ 0,0 }, 0, 20, 5, BLACK);
+	Vector2 textAdd = MeasureTextEx(AssetList::textFont["Setback"], text.c_str(), 20, 5);
+	DrawTextPro(AssetList::textFont["Setback"], text.c_str(), Vector2{ position.x + (size.x - textAdd.x) * 0.5f, position.y + (size.y - textAdd.y) * 0.5f }, Vector2{0,0}, 0, 20, 5, BLACK);
+}
+
+int Button::Clicked() {
+	return value;
 }

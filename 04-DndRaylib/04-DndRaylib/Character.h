@@ -17,8 +17,9 @@ public:
 	float maxHealth;
 
 public:
-	Character(string _name, Texture2D* _sprite, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health);
+	Character(Texture2D* _sprite, Vector2 _pos, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health);
 	virtual ~Character();
+	void Draw();
 	void GetDamage(int damages);
 
 	const inline string GetName() { return name; }

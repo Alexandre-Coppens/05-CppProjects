@@ -9,6 +9,8 @@ GameObject::GameObject(){
 	size = Vector2{ 0,0 };
 	sprite = nullptr;
 	type = GameObjectType::None;
+
+	CreateRect();
 }
 
 GameObject::GameObject(bool _enabled, string _name, Vector2 _pos, Vector2 _size, Texture2D* _sprite, GameObjectType _type) {
@@ -19,7 +21,7 @@ GameObject::GameObject(bool _enabled, string _name, Vector2 _pos, Vector2 _size,
 	sprite = _sprite;
 	type = _type;
 
-	GameObjectList[_name] = this;
+	CreateRect();
 }
 
 GameObject::~GameObject(){
@@ -29,7 +31,6 @@ void GameObject::Update() {
 }
 
 void GameObject::Draw() {
-	if (!enabled)return;
 	DrawTextureRec(*sprite, rect, position, WHITE);
 }
 
@@ -50,6 +51,15 @@ void GameObject::CreateGameObject(const string id, GameObject* gO){
 	GameObjectList[id] = gO;
 }
 
+GameObject* GameObject::GetGameObjectWithName(string _name) {
+	for (auto const& i : GameObjectList) {
+		if (i.first == _name) {
+			return const_cast<GameObject*>(i.second);
+		}
+	}
+	return nullptr;
+}
+
 vector<GameObject*> GameObject::GetAllGameObjects()
 {
 	vector<GameObject*> ret;
@@ -67,4 +77,8 @@ vector<GameObject*> GameObject::GetAllGameObjectsWith(GameObjectType type){
 		}
 	}
     return ret;
+}
+
+int GameObject::Clicked() {
+	return 0;
 }

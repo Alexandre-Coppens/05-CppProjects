@@ -1,7 +1,7 @@
 #include "AssetsList.h"
 
 AssetList* AssetList::instance = nullptr;
-Font AssetList::textFont;
+map<string, Font> AssetList::textFont;
 map<string, Texture2D> AssetList:: SpriteList;
 
 AssetList::AssetList() {
@@ -15,7 +15,9 @@ AssetList::AssetList() {
     LoadTexture2D("imgEffHeal", "resources/Heal.png");
     LoadTexture2D("imgUIButton", "resources/Button.png");
 
-    textFont = LoadFont("resources/fonts/alagard.png");
+    textFont["Alagard"] = LoadFont("resources/fonts/alagard.png");
+    textFont["Romulus"] = LoadFont("resources/fonts/romulus.png");
+    textFont["Setback"] = LoadFont("resources/fonts/setback.png");
     music = LoadMusicStream("resources/balatro.mp3");
 
     SetMusicVolume(music, 2);

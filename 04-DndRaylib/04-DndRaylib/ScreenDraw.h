@@ -24,7 +24,6 @@ enum class CurrentBattlePhase {
 };
 
 static void PrintAttacksChoice(Character* character);
-static void DrawCharacters(Character* character, string spaces);
 static void PrintConfirmAttacks(Character* character, short playerChoice);
 static void PrintAttack(Character* attacker, Character* defender, short attackChoice);
 static void DrawScreen(Character* playerCharacter, Character* enemyCharacter, CurrentBattlePhase phase, short playerChoice);
@@ -75,7 +74,7 @@ static string GetStrHealth(Character* character) {
 
 static void DrawCharacters(Character* character, Vector2 position) {
 	if (assets == nullptr) assets = AssetList::GetInstance();
-	DrawTextEx(assets->textFont,character->name.c_str(), Vector2{position.x, position.y - 40}, 20, 3, WHITE);
+	DrawTextEx(assets->textFont["Alagard"], character->name.c_str(), Vector2{position.x, position.y - 40}, 20, 3, WHITE);
 	DrawRectangle((int)position.x, (int)position.y - 15, (int)((character->health * 150)/character->maxHealth), 10, WHITE);
 	for (Status status : character->currentStatus){
 		switch (status)
@@ -106,7 +105,7 @@ static void DrawCharacters(Character* character, Vector2 position) {
 }
 
 static void DrawScreen(Character* playerCharacter, Character* enemyCharacter, CurrentBattlePhase phase, short playerChoice) {
-	ClearBackground(GRAY);
+	
 
 	DrawCharacters(enemyCharacter, Vector2{350, 100});
 	DrawCharacters(playerCharacter, Vector2{50, 100});

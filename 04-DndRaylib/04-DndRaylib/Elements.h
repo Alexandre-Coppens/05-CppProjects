@@ -71,7 +71,7 @@ static map<Status, string> statusNames{
 		{Status::Frost, "Frost"},
 		{Status::Poisoned, "Poison"},
 		{Status::Electric, "Paralysis"},
-		{Status::Heal, "Healing on you"},
+		{Status::Heal, "Healing"},
 		{Status::None, "Nothing"}
 };
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include "Raylib.h"
+#include "AssetsList.h"
 
 using std::string;
 using std::vector;
@@ -40,6 +41,8 @@ public:
     bool IsCursorInBounds();
     void CreateRect();
     static void CreateGameObject(const string id, GameObject* gO);
+    static GameObject* GetGameObjectWithName(string _name);
     static vector<GameObject*> GetAllGameObjects();
     static vector<GameObject*> GetAllGameObjectsWith(GameObjectType type);
+    virtual int Clicked();
 };

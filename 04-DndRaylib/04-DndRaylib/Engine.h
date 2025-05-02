@@ -10,13 +10,14 @@ using std::vector;
 
 class Engine {
 private:
-	vector<Character> playerCharacters;
-	vector<Character> enemyCharacters;
+	vector<Character*> playerCharacters;
+	vector<Character*> enemyCharacters;
 
 	AssetList* assets;
 
-	short pattack;
-	short eattack;
+	short pAttack;
+	short eAttack;
+
 	short input;
 
 	vector<short> currentActors{ 0,0 };
@@ -29,6 +30,7 @@ public:
 
 private:
 	int UserInput();
+	void ChangeButtonDispositions();
 	void PrintCurrentPhase(int choice);
 	int WaitForPlayerInput();
 	bool EffectsAfterAttack(Character* defender, bool isPlayer);

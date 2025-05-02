@@ -20,4 +20,5 @@ public:
     virtual ~Button();
 
     void Draw();
+    int Clicked();
 };
