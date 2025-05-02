@@ -1,5 +1,6 @@
 #include "AssetsList.h"
 
+Music AssetList::music;
 AssetList* AssetList::instance = nullptr;
 map<string, Font> AssetList::textFont;
 map<string, Texture2D> AssetList:: SpriteList;

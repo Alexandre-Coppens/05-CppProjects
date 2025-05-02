@@ -1,8 +1,7 @@
 #include <iostream>
 #include "Character.h"
 
-Character::Character(Texture2D* _sprite, Vector2 _pos, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health) {
-	GameObject::GameObject();
+Character::Character(Texture2D* _sprite, Vector2 _pos, vector<DamageTypes> _types, vector<AttackName> _attacks, float _speed, float _health) : GameObject() {
 	enabled = false;
 	position = _pos;
 	size = Vector2{ 150,150 };

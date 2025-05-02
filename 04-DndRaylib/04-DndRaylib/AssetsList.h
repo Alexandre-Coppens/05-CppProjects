@@ -12,9 +12,9 @@ using std::map;
 class AssetList {
 private:
     Texture2D textureTemp;
-    Music music;
 
 public:
+    static Music music;
     static map<string, Font> textFont;
     static map<string, Texture2D> SpriteList;
     static AssetList* instance;

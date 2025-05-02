@@ -42,49 +42,47 @@ void Engine::Start(){
 
 
 
-vector<DamageTypes> knightTypes{ DamageTypes::Slashing, DamageTypes::Fire };
-vector<AttackName> knightAttacks{ AttackName::Slash, AttackName::FireSword, AttackName::Smite, AttackName::Heal };
-GameObject::CreateGameObject("KNIGHT", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, knightTypes, knightAttacks, float(rand() % 50), float(500)));
+	vector<DamageTypes> knightTypes{ DamageTypes::Slashing, DamageTypes::Fire };
+	vector<AttackName> knightAttacks{ AttackName::Slash, AttackName::FireSword, AttackName::Smite, AttackName::Heal };
+	GameObject::CreateGameObject("KNIGHT", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, knightTypes, knightAttacks, float(rand() % 50), float(500)));
 
-vector<DamageTypes> rogueTypes{ DamageTypes::Piercing, DamageTypes::Necrotic };
-vector<AttackName> rogueAttacks{ AttackName::PiercingDagger, AttackName::ShadowDagger, AttackName::Poison, AttackName::Heal };
-GameObject::CreateGameObject("ROGUE", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, rogueTypes, rogueAttacks, float(rand() % 50), float(300)));
+	vector<DamageTypes> rogueTypes{ DamageTypes::Piercing, DamageTypes::Necrotic };
+	vector<AttackName> rogueAttacks{ AttackName::PiercingDagger, AttackName::ShadowDagger, AttackName::Poison, AttackName::Heal };
+	GameObject::CreateGameObject("ROGUE", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, rogueTypes, rogueAttacks, float(rand() % 50), float(300)));
 
-vector<DamageTypes> wizardTypes{ DamageTypes::Lighting, DamageTypes::Fire };
-vector<AttackName> wizardAttacks{ AttackName::Fireball, AttackName::Lightning, AttackName::Poison, AttackName::Heal };
-GameObject::CreateGameObject("WIZARD", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, wizardTypes, wizardAttacks, float(rand() % 50), float(250)));
+	vector<DamageTypes> wizardTypes{ DamageTypes::Lighting, DamageTypes::Fire };
+	vector<AttackName> wizardAttacks{ AttackName::Fireball, AttackName::Lightning, AttackName::Poison, AttackName::Heal };
+	GameObject::CreateGameObject("WIZARD", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, wizardTypes, wizardAttacks, float(rand() % 50), float(250)));
 
-vector<DamageTypes> barbarianTypes{ DamageTypes::Fire, DamageTypes::Cold };
-vector<AttackName> barbarianAttacks{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
-GameObject::CreateGameObject("BARBARIAN", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, barbarianTypes, barbarianAttacks, float(rand() % 50), float(450)));
+	vector<DamageTypes> barbarianTypes{ DamageTypes::Fire, DamageTypes::Cold };
+	vector<AttackName> barbarianAttacks{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
+	GameObject::CreateGameObject("BARBARIAN", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, barbarianTypes, barbarianAttacks, float(rand() % 50), float(450)));
 
-enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("SKELETON")));
-enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("MIMIC")));
-enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("BEHOLDER")));
-enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("GOLEM")));
-enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("LICH")));
-enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("DRAON")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("SKELETON")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("MIMIC")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("BEHOLDER")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("GOLEM")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("LICH")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("DRAON")));
 
-playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("KNIGHT")));
-playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("ROGUE")));
-playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("WIZARD")));
-playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("BARBARIAN")));
+	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("KNIGHT")));
+	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("ROGUE")));
+	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("WIZARD")));
+	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("BARBARIAN")));
 
-playerCharacters[0]->enabled = true;
-enemyCharacters[0]->enabled = true;
+	playerCharacters[0]->enabled = true;
+	enemyCharacters[0]->enabled = true;
 
-//Mettre dans les enfants de go un appel de la fctn vide créatrice av de placer les variables puis créer l'objet à l'intérieur des enfants comme ci-dessous
+	GameObject::CreateGameObject("GOBtnAttack1", new Button(false, Vector2{ 75,300 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 1));
+	GameObject::CreateGameObject("GOBtnAttack2", new Button(false, Vector2{ 325,300 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 2));
+	GameObject::CreateGameObject("GOBtnAttack3", new Button(false, Vector2{ 75,400 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 3));
+	GameObject::CreateGameObject("GOBtnAttack4", new Button(false, Vector2{ 325,400 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 4));
 
-GameObject::CreateGameObject("GOBtnAttack1", new Button(false, Vector2{ 75,300 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 1));
-GameObject::CreateGameObject("GOBtnAttack2", new Button(false, Vector2{ 325,300 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 2));
-GameObject::CreateGameObject("GOBtnAttack3", new Button(false, Vector2{ 75,400 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 3));
-GameObject::CreateGameObject("GOBtnAttack4", new Button(false, Vector2{ 325,400 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 4));
-
-currentPhase = CurrentBattlePhase::ChooseAttack;
-ChangeButtonDispositions();
-input = 0;
-pAttack = 0;
-eAttack = 0;
+	currentPhase = CurrentBattlePhase::ChooseAttack;
+	ChangeButtonDispositions();
+	input = 0;
+	pAttack = 0;
+	eAttack = 0;
 }
 
 void Engine::Update() {

@@ -17,8 +17,14 @@ int main()
 	engine.Start();
 
 	srand(time(NULL));
-	while (true) {
+    while (!WindowShouldClose()){
+        UpdateMusicStream(AssetList::music);
 		engine.Update();
 		engine.Draw();
 	}
+
+    UnloadMusicStream(AssetList::music);
+
+    CloseAudioDevice();
+    CloseWindow();
 }

@@ -1,15 +1,13 @@
 #include "Button.h"
 #include "AssetsList.h"
 
-Button::Button() {
-	GameObject::GameObject();
+Button::Button() : GameObject() {
 	value = 0;
 	text = "";
 	type = GameObjectType::None;
 }
 
-Button::Button(bool _enabled, Vector2 _pos, Vector2 _size, Texture2D* _sprite, int _value){
-	GameObject::GameObject();
+Button::Button(bool _enabled, Vector2 _pos, Vector2 _size, Texture2D* _sprite, int _value) : GameObject() {
 	enabled = _enabled;
 	position = _pos;
 	size = _size;
