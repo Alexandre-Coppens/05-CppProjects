@@ -4,6 +4,7 @@
 #include "Elements.h"
 
 #include "Button.h"
+#include "FlyingNumber.h"
 
 using std::cout;
 using std::to_string;
@@ -86,34 +87,36 @@ void Engine::Start(){
 }
 
 void Engine::Update() {
-	/*do {
-		currentPhase = CurrentBattlePhase::ChooseAttack;
-		pattack = UserInput();
-		currentPhase = CurrentBattlePhase::ConfirmAttack;
-		input = UserInput();
-	} while (input != 1);
+	//if (playerCharacters[currentActors[0]].speed + HasStatus(playerCharacters[currentActors[0]].currentStatus,Status::Frost)?-10:0 >= enemyCharacters[currentActors[1]].speed + HasStatus(enemyCharacters[currentActors[1]].currentStatus, Status::Frost) ? -10 : 0) {
+	//	currentPhase = CurrentBattlePhase::AttackPlayer;
+	//	UserInput();
+	//	currentPhase = CurrentBattlePhase::AttackEnemy;
+	//	UserInput();
+	//}
+	//else {
+	//	currentPhase = CurrentBattlePhase::AttackEnemy;
+	//	UserInput();
+	//	currentPhase = CurrentBattlePhase::AttackPlayer;
+	//	UserInput();
+	//}
+	//CheckDeath();
 
-	if (playerCharacters[currentActors[0]].speed + HasStatus(playerCharacters[currentActors[0]].currentStatus,Status::Frost)?-10:0 >= enemyCharacters[currentActors[1]].speed + HasStatus(enemyCharacters[currentActors[1]].currentStatus, Status::Frost) ? -10 : 0) {
-		currentPhase = CurrentBattlePhase::AttackPlayer;
-		UserInput();
-		currentPhase = CurrentBattlePhase::AttackEnemy;
-		UserInput();
-	}
-	else {
-		currentPhase = CurrentBattlePhase::AttackEnemy;
-		UserInput();
-		currentPhase = CurrentBattlePhase::AttackPlayer;
-		UserInput();
-	}
-	CheckDeath();*/
 	vector<GameObject*> goList = GameObject::GetAllGameObjects();
+	for (GameObject* go : goList) {
+		go->Update();
+	}
+
 	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+		GameObject::CreateGameObject("posNbr" + to_string(std::rand()), new FlyingNumber(GetMousePosition(), 20));
 		for (GameObject* go : goList) {
 			if (go->IsCursorInBounds() && go->enabled) {
 				input = go->Clicked();
 				UserInput();
 			}
 		}
+	}
+	if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
+		GameObject::CreateGameObject("negNbr" + to_string(std::rand()), new FlyingNumber(GetMousePosition(), -20));
 	}
 }
 

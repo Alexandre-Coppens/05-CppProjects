@@ -138,6 +138,7 @@
     <ClCompile Include="Button.h" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="FlyingNumber.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -146,6 +147,7 @@
     <ClInclude Include="Elements.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="AssetsList.h" />
+    <ClInclude Include="FlyingNumber.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="ScreenDraw.h" />
