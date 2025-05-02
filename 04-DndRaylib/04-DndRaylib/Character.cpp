@@ -24,6 +24,7 @@ Character::~Character(){
 void Character::Draw() {
 	GameObject::Draw();
 	DrawTextEx(AssetList::textFont["Alagard"], name.c_str(), Vector2{position.x, position.y - 40}, 20, 3, WHITE);
+	DrawRectangle((int)position.x, (int)position.y - 15, 150, 10, BLACK);
 	DrawRectangle((int)position.x, (int)position.y - 15, (int)((health * 150) / maxHealth), 10, WHITE);
 	for (Status status : currentStatus) {
 		switch (status)

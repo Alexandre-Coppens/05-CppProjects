@@ -7,7 +7,7 @@ FlyingNumber::FlyingNumber(Vector2 _pos, int _value){
 	position = _pos;
 	velocity.x = std::rand() % 10 - 5;
 	velocity.y = std::rand() % 10 * -1;
-	if (_value > 0) value = "+" + to_string(abs(_value));
+	if (-_value > 0) value = "+" + to_string(abs(_value));
 	else value = "-" + to_string(abs(_value));
 	timer = 2;
 	speed = 5;

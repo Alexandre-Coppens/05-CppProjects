@@ -25,8 +25,8 @@ Button::~Button(){
 
 void Button::Draw(){
 	GameObject::Draw();
-	Vector2 textAdd = MeasureTextEx(AssetList::textFont["Setback"], text.c_str(), 20, 5);
-	DrawTextPro(AssetList::textFont["Setback"], text.c_str(), Vector2{ position.x + (size.x - textAdd.x) * 0.5f, position.y + (size.y - textAdd.y) * 0.5f }, Vector2{0,0}, 0, 20, 5, BLACK);
+	Vector2 textAdd = MeasureTextEx(AssetList::textFont["Romulus"], text.c_str(), 20, 5);
+	DrawTextPro(AssetList::textFont["Romulus"], text.c_str(), Vector2{ position.x + (size.x - textAdd.x) * 0.5f, position.y + (size.y - textAdd.y) * 0.5f }, Vector2{0,0}, 0, 20, 5, BLACK);
 }
 
 int Button::Clicked() {

@@ -100,6 +100,13 @@ void Engine::Update() {
 	//	UserInput();
 	//}
 	//CheckDeath();
+	if (events.size() > 0) {
+		events[0].time -= GetFrameTime();
+		if (events[0].time <= 0) {
+			events.erase(events.begin());
+			NextEvent();
+		}
+	}
 
 	vector<GameObject*> goList = GameObject::GetAllGameObjects();
 	for (GameObject* go : goList) {
@@ -128,19 +135,39 @@ void Engine::Draw() {
 		if (go->enabled) go->Draw();
 	}
 
+	string text;
+	Vector2 textAdd;
+	string attackEffect;
+	string confirmText;
+
 	switch (currentPhase) {
 	case CurrentBattlePhase::ConfirmAttack:
-		string attackName = attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].name;
-		Vector2 textAdd = MeasureTextEx(AssetList::textFont["Alagard"], attackName.c_str(), 20, 5);
-		DrawTextPro(AssetList::textFont["Alagard"], attackName.c_str(), Vector2{ (GetScreenWidth() - textAdd.x) * 0.5f, 400 - textAdd.y * 0.5f }, Vector2{ 0,0 }, 0, 20, 5, BLACK);
+		text = attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].name;
+		textAdd = MeasureTextEx(AssetList::textFont["Alagard"], text.c_str(), 20, 5);
+		DrawTextPro(AssetList::textFont["Alagard"], text.c_str(), Vector2{ (GetScreenWidth() - textAdd.x) * 0.5f, 400 - textAdd.y * 0.5f }, Vector2{ 0,0 }, 0, 20, 5, BLACK);
 
-		string attackDamage = to_string(attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].damage);
-		string attackEffect = statusNames[attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].status];
+		text = to_string(attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].damage);
+		attackEffect = statusNames[attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].status];
 
-		string confirmText = attackDamage + " damages and inflict " + attackEffect + ".";
-		textAdd = MeasureTextEx(AssetList::textFont["Setback"], confirmText.c_str(), 20, 5);
-		DrawTextPro(AssetList::textFont["Setback"], confirmText.c_str(), Vector2{ (GetScreenWidth() - textAdd.x) * 0.5f, 430 - textAdd.y * 0.5f }, Vector2{ 0,0 }, 0, 20, 5, BLACK);
+		confirmText = text + " damages and inflict " + attackEffect + ".";
+		textAdd = MeasureTextEx(AssetList::textFont["Romulus"], confirmText.c_str(), 20, 5);
+		DrawTextPro(AssetList::textFont["Romulus"], confirmText.c_str(), Vector2{ (GetScreenWidth() - textAdd.x) * 0.5f, 430 - textAdd.y * 0.5f }, Vector2{ 0,0 }, 0, 20, 5, BLACK);
+		break;
+
+	case CurrentBattlePhase::AttackPlayer:
+		text = events[0].text;
+		textAdd = MeasureTextEx(AssetList::textFont["Romulus"], text.c_str(), 15, 5);
+		DrawTextPro(AssetList::textFont["Romulus"], text.c_str(), Vector2{ (GetScreenWidth() - textAdd.x) * 0.5f, 400 - textAdd.y * 0.5f }, Vector2{ 0,0 }, 0, 15, 5, BLACK);
+		break;
+
+	case CurrentBattlePhase::AttackEnemy:
+		text = events[0].text;
+		textAdd = MeasureTextEx(AssetList::textFont["Romulus"], text.c_str(), 15, 5);
+		DrawTextPro(AssetList::textFont["Romulus"], text.c_str(), Vector2{ (GetScreenWidth() - textAdd.x) * 0.5f, 400 - textAdd.y * 0.5f }, Vector2{ 0,0 }, 0, 15, 5, BLACK);
+		break;
 	}
+
+
 
 	EndDrawing();
 }
@@ -165,7 +192,10 @@ int Engine::UserInput() {
 			else{
 				currentPhase = CurrentBattlePhase::AttackEnemy;
 			}
+			eAttack = rand() % 3;
 			ChangeButtonDispositions();
+			lastPlayed = 0;
+			AttackTurn();
 		}
 		if (input == 2) {
 			currentPhase = CurrentBattlePhase::ChooseAttack;
@@ -207,6 +237,7 @@ void Engine::ChangeButtonDispositions() {
 		}
 		return;
 
+
 	case CurrentBattlePhase::AttackPlayer:
 		for (GameObject* button : buttons) {
 			button->enabled = false;
@@ -219,6 +250,133 @@ void Engine::ChangeButtonDispositions() {
 		}
 		return;
 	}
+}
+
+void Engine::NextEvent() {
+	if (events.size() > 0) {
+		if (events[0].code[0] == 'p') DamageCharacter(enemyCharacters[currentActors[1]], events[0].attack);
+		else if (events[0].code[0] == 'e') DamageCharacter(playerCharacters[currentActors[0]], events[0].attack);
+	}
+	else{
+		if (lastPlayed == 11) {
+			currentPhase = CurrentBattlePhase::ChooseAttack;
+			ChangeButtonDispositions();
+		}
+		if (lastPlayed == 10 || lastPlayed == 1) {
+			if (lastPlayed == 1) {
+				currentPhase = CurrentBattlePhase::AttackPlayer;
+			}
+			else {
+				currentPhase = CurrentBattlePhase::AttackEnemy;
+			}
+			ChangeButtonDispositions();
+			AttackTurn();
+		}
+	}
+}
+
+void Engine::AttackTurn() {
+	Character* attack;
+	Character* defend;
+	bool isPlayer;
+
+	if (currentPhase == CurrentBattlePhase::AttackPlayer) {
+		attack = playerCharacters[currentActors[0]];
+		defend = enemyCharacters[currentActors[1]];
+		isPlayer = true;
+		lastPlayed += 10;
+	}
+	else{
+		defend = playerCharacters[currentActors[0]];
+		attack = enemyCharacters[currentActors[1]];
+		isPlayer = false;
+		lastPlayed += 1;
+	}
+
+	if (!EffectsBeforeAttack(attack)) {
+		if(isPlayer) events.push_back(AttackEvent{ 2, "p", attack->name + " use " + attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].name + " !\n\n It deals " + to_string(attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].damage) + " damages and inflict " + statusNames[attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].status] + " !", attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]] });
+		else events.push_back(AttackEvent{ 2, "e", attack->name + " use " + attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]].name + " !\n\n It deals " + to_string(attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]].damage) + " damages and inflict " + statusNames[attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]].status] + " !", attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]] });
+	}
+	EffectsAfterAttack(defend, !isPlayer);
+	Heal(attack, isPlayer);
+	NextEvent();
+}
+
+bool Engine::EffectsBeforeAttack(Character* attack) { // Return true if attacker is successfuly paralised
+	vector<Status> statusList;
+	statusList = attack->currentStatus;
+	if (statusList.size() == 0) return false;
+	for (int i = 0; i < statusList.size(); i++)
+	{
+		if (rand() % 3 == 0 || statusList[i] == Status::None) {
+			statusList.erase(find(statusList.begin(), statusList.end(), statusList[i]));
+			i--;
+			break;
+		}
+
+		if (statusList[i] == Status::Electric) {
+			if (rand() % 4 == 0)
+			{
+				currentPhase = CurrentBattlePhase::Paralysed;
+				attack->currentStatus = statusList;
+				events.push_back(AttackEvent{ 1, "s", attack->name + " is Paralysed! Turn Skipped.", AttackInfo{DamageTypes::Normal, 0, Status::None, ""}});
+				return true;
+			}
+		}
+	}
+	attack->currentStatus = statusList;
+	return false;
+}
+
+bool Engine::EffectsAfterAttack(Character* defend, bool isPlayer)
+{
+	vector<Status> statusList;
+	AttackInfo attack;
+	statusList = defend->currentStatus;
+	int damage;
+	if (statusList.size() == 0) return false;
+	for (int i = 0; i < statusList.size(); i++)
+	{
+		switch (statusList[i])
+		{
+		case Status::Poisoned:
+			damage = (int)(defend->maxHealth / 20);
+			events.push_back(AttackEvent{ 1, (!isPlayer?"p":"e"), defend->name + " is Poisoned! He will take " + to_string(damage) + ".", AttackInfo{DamageTypes::Necrotic, damage, Status::None, ""} });
+			break;
+
+		case Status::Burn:
+			damage = (int)(defend->maxHealth / 20);
+			events.push_back(AttackEvent{ 1, (!isPlayer ?"p":"e"), defend->name + " is Burning! He will take " + to_string(damage) + ".", AttackInfo{DamageTypes::Fire, damage, Status::None, ""} });
+			break;
+
+		default:
+			break;
+		}
+	}
+	return true;
+}
+
+void Engine::Heal(Character* attacker, bool isPlayer)
+{
+	vector<Status> statusList;
+	AttackInfo attack;
+	statusList = attacker->currentStatus;
+	int heal;
+	if (statusList.size() == 0) return;
+	for (int i = 0; i < statusList.size(); i++)
+	{
+		switch (statusList[i])
+		{
+		case Status::Heal:
+			heal = -(int)(attacker->maxHealth / 20);
+			events.push_back(AttackEvent{ 1, (isPlayer ? "p" : "e"), attacker->name + " is Healing! He is restoring " + to_string(heal) + " health.", AttackInfo{DamageTypes::Normal, heal, Status::None, ""} });
+			return;
+
+		default:
+			break;
+		}
+	}
+	return;
 }
 
 //void Engine::PrintCurrentPhase(int choice) {
@@ -246,117 +404,27 @@ void Engine::ChangeButtonDispositions() {
 //	return 0;
 //}
 //
-//void Engine::AttackCharacter(Character* attacker, Character* defender, short attackChoice) {
-//	AttackInfo info = attackInfos[attacker->attacks[attackChoice]];
-//	DamageCharacter(defender, info);
-//	if(info.status != Status::Heal) defender->currentStatus.push_back(info.status);
-//	else attacker->currentStatus.push_back(info.status);
-//}
+void Engine::AttackCharacter(Character* attacker, Character* defender, short attackChoice) {
+	AttackInfo info = attackInfos[attacker->attacks[attackChoice]];
+	DamageCharacter(defender, info);
+	/*if(info.status != Status::Heal) defender->currentStatus.push_back(info.status);
+	else attacker->currentStatus.push_back(info.status);*/
+}
 //
-//void Engine::DamageCharacter(Character* defender, AttackInfo attack){
-//	defender->health -= attack.damage * GetWeakness(attack.damageType, defender->elementalTypes);
-//	if(defender->health > defender->maxHealth) defender->health = defender->maxHealth;
-//}
+
+void Engine::DamageCharacter(Character* character, AttackInfo attack){
+	GameObject::CreateGameObject("NumberParticle" + to_string(std::rand()), new FlyingNumber(character->position, attack.damage));
+	character->health -= attack.damage * GetWeakness(attack.damageType, character->elementalTypes);
+	if(character->health > character->maxHealth) character->health = character->maxHealth;
+	character->currentStatus.push_back(attack.status);
+}
+
+
+
+
 //
-//bool Engine::EffectsBeforeAttack(Character* attacker, bool isPlayer){ // Return true if attacker is successfuly paralised{
-//	vector<Status> statusList;
-//	statusList = attacker->currentStatus;
-//	bool ret = false;
-//	if (statusList.size() == 0) return false;
-//	for (int i = 0; i < statusList.size(); i++)
-//	{
-//		if (rand() % 3 == 0) {
-//			statusList.erase(find(statusList.begin(), statusList.end(), statusList[i]));
-//			i--;
-//			break;
-//		}
-//
-//		if(statusList[i] == Status::Electric) {
-//			if (rand() % 4 == 0)
-//			{
-//				currentPhase = CurrentBattlePhase::Paralysed;
-//				PrintCurrentPhase(isPlayer?0:1);
-//				attacker->currentStatus = statusList;
-//				return true;
-//			}
-//		}
-//
-//		if (statusList[i] == Status::None) {
-//			statusList.erase(find(statusList.begin(), statusList.end(), Status::None));
-//			i--;
-//			break;
-//		}
-//	}
-//	attacker->currentStatus = statusList;
-//	return ret;
-//}
-//
-//bool Engine::EffectsAfterAttack(Character* defender, bool isPlayer)
-//{
-//	vector<Status> statusList;
-//	AttackInfo attack;
-//	statusList = defender->currentStatus;
-//	if (statusList.size() == 0) return false;
-//	for (int i = 0; i < statusList.size(); i++)
-//	{
-//		switch (statusList[i])
-//		{
-//		case Status::Poisoned:
-//			attack.damageType = DamageTypes::Necrotic;
-//			attack.damage = (int)(defender->maxHealth / 20);
-//			attack.status = Status::None;
-//			attack.name = "Poison";
-//			DamageCharacter(defender, attack);
-//
-//			currentPhase = CurrentBattlePhase::Poisoned;
-//			PrintCurrentPhase(isPlayer ? 0 : 1);
-//			break;
-//
-//		case Status::Burn:
-//			attack.damageType = DamageTypes::Fire;
-//			attack.damage = (int)(defender->maxHealth / 20);
-//			attack.status = Status::None;
-//			attack.name = "Fire";
-//			DamageCharacter(defender, attack);
-//
-//			currentPhase = CurrentBattlePhase::Burned;
-//			PrintCurrentPhase(isPlayer ? 0 : 1);
-//			break;
-//
-//		default:
-//			break;
-//		}
-//	}
-//	return true;
-//}
-//
-//void Engine::Heal(Character* attacker, bool isPlayer)
-//{
-//	vector<Status> statusList;
-//	AttackInfo attack;
-//	statusList = attacker->currentStatus;
-//	if (statusList.size() == 0) return;
-//	for (int i = 0; i < statusList.size(); i++)
-//	{
-//		switch (statusList[i])
-//		{
-//		case Status::Heal:
-//			attack.damageType = DamageTypes::Normal;
-//			attack.damage = -(int)(attacker->maxHealth / 20);
-//			attack.status = Status::None;
-//			attack.name = "Heal";
-//			DamageCharacter(attacker, attack);
-//			currentPhase = CurrentBattlePhase::Healed;
-//			PrintCurrentPhase(isPlayer ? 0 : 1);
-//			return;
-//
-//		default:
-//			break;
-//		}
-//	}
-//	return;
-//}
-//
+
+
 //void Engine::CheckDeath()
 //{
 //	if (enemyCharacters[currentActors[1]].health <= 0) {
