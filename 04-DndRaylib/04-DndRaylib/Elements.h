@@ -76,10 +76,10 @@ static map<Status, string> statusNames{
 };
 
 struct AttackInfo {
-	DamageTypes damageType;
-	int damage;
-	Status status;
-	string name;
+	DamageTypes damageType{};
+	int damage{};
+	Status status{};
+	string name{};
 };
 
 static map<AttackName, AttackInfo> attackInfos{

@@ -59,9 +59,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FlyingNumber.h">
       <Filter>Header Files</Filter>
     </ClInclude>

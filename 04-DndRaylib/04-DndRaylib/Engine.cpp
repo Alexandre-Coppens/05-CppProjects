@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "Engine.h"
 #include "ScreenDraw.h"
 #include "Elements.h"
@@ -11,6 +12,9 @@ using std::to_string;
 
 CurrentBattlePhase currentPhase;
 
+struct AttackInfo;
+struct Engine::AttackEvent;
+
 Engine::Engine() {
 }
 
@@ -19,27 +23,27 @@ void Engine::Start(){
 
 	vector<DamageTypes> dragonTypes{ DamageTypes::Lighting, DamageTypes::Normal };
 	vector<AttackName> dragonAttacks{ AttackName::MoltenBreath, AttackName::LightningCall, AttackName::MightyDive, AttackName::OldMagic };
-	GameObject::CreateGameObject("DRAGON", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 350, 100 }, dragonTypes, dragonAttacks, float(rand() % 50), float(1000)));
+	GameObject::CreateGameObject("DRAGON", new Character(&assets->SpriteList["imgCharDragon"], Vector2{ 350, 100 }, dragonTypes, dragonAttacks, float(rand() % 50), float(1000)));
 
 	vector<DamageTypes> lichTypes{ DamageTypes::Necrotic, DamageTypes::Normal };
 	vector<AttackName> lichAttacks{ AttackName::Fireball, AttackName::Poison, AttackName::Lightning, AttackName::OldMagic };
-	GameObject::CreateGameObject("LICH", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 350, 100 }, lichTypes, lichAttacks, float(rand() % 50), float(356)));
+	GameObject::CreateGameObject("LICH", new Character(&assets->SpriteList["imgCharLich"], Vector2{ 350, 100 }, lichTypes, lichAttacks, float(rand() % 50), float(356)));
 
 	vector<DamageTypes> golemTypes{ DamageTypes::Normal, DamageTypes::Normal };
 	vector<AttackName> golemAttacks{ AttackName::ThrowRock, AttackName::Slam, AttackName::HeadSmasher, AttackName::OldMagic };
-	GameObject::CreateGameObject("GOLEM", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 350, 100 }, golemTypes, golemAttacks, float(rand() % 50), float(500)));
+	GameObject::CreateGameObject("GOLEM", new Character(&assets->SpriteList["imgCharGolem"], Vector2{ 350, 100 }, golemTypes, golemAttacks, float(rand() % 50), float(500)));
 
 	vector<DamageTypes> beholderTypes{ DamageTypes::Fire, DamageTypes::Cold };
 	vector<AttackName> beholderAttacks{ AttackName::IceBreath, AttackName::Stun, AttackName::Chomp, AttackName::Fireball };
-	GameObject::CreateGameObject("BEHOLDER", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 350, 100 }, beholderTypes, beholderAttacks, float(rand() % 50), float(250)));
+	GameObject::CreateGameObject("BEHOLDER", new Character(&assets->SpriteList["imgCharBeholder"], Vector2{ 350, 100 }, beholderTypes, beholderAttacks, float(rand() % 50), float(250)));
 
 	vector<DamageTypes> mimicTypes{ DamageTypes::Lighting, DamageTypes::Piercing };
 	vector<AttackName> mimicAttacks{ AttackName::Zap, AttackName::ShortCircuit, AttackName::Dive, AttackName::Triped };
-	GameObject::CreateGameObject("MIMIC", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 350, 100 }, mimicTypes, mimicAttacks, float(rand() % 50), float(150)));
+	GameObject::CreateGameObject("MIMIC", new Character(&assets->SpriteList["imgCharMimic"], Vector2{ 350, 100 }, mimicTypes, mimicAttacks, float(rand() % 50), float(150)));
 
 	vector<DamageTypes> skeletonTypes{ DamageTypes::Necrotic, DamageTypes::Slashing };
 	vector<AttackName> skeletonAttacks{ AttackName::Slash, AttackName::Poison, AttackName::Triped, AttackName::Triped };
-	GameObject::CreateGameObject("SKELETON", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 350, 100 }, skeletonTypes, skeletonAttacks, float(rand() % 50), float(75)));
+	GameObject::CreateGameObject("SKELETON", new Character(&assets->SpriteList["imgCharSkeleton"], Vector2{ 350, 100 }, skeletonTypes, skeletonAttacks, float(rand() % 50), float(75)));
 
 
 
@@ -59,25 +63,33 @@ void Engine::Start(){
 	vector<AttackName> barbarianAttacks{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
 	GameObject::CreateGameObject("BARBARIAN", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, barbarianTypes, barbarianAttacks, float(rand() % 50), float(450)));
 
+
+
+	vector<DamageTypes> a{ DamageTypes::Fire, DamageTypes::Cold };
+	vector<AttackName> b{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
+	GameObject::CreateGameObject("NONE", new Character(&assets->SpriteList[""], Vector2{ 50, 100 }, a, b, float(rand() % 50), float(9999)));
+
 	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("SKELETON")));
 	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("MIMIC")));
 	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("BEHOLDER")));
 	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("GOLEM")));
 	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("LICH")));
-	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("DRAON")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("DRAGON")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("NONE")));
 
 	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("KNIGHT")));
 	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("ROGUE")));
 	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("WIZARD")));
 	playerCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("BARBARIAN")));
+	enemyCharacters.push_back(dynamic_cast<Character*>(GameObject::GetGameObjectWithName("NONE")));
 
 	playerCharacters[0]->enabled = true;
 	enemyCharacters[0]->enabled = true;
 
-	GameObject::CreateGameObject("GOBtnAttack1", new Button(false, Vector2{ 75,300 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 1));
-	GameObject::CreateGameObject("GOBtnAttack2", new Button(false, Vector2{ 325,300 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 2));
-	GameObject::CreateGameObject("GOBtnAttack3", new Button(false, Vector2{ 75,400 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 3));
-	GameObject::CreateGameObject("GOBtnAttack4", new Button(false, Vector2{ 325,400 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 4));
+	GameObject::CreateGameObject("GOBtnAttack1", new Button(false, Vector2{ 75,310 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 1));
+	GameObject::CreateGameObject("GOBtnAttack2", new Button(false, Vector2{ 325,310 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 2));
+	GameObject::CreateGameObject("GOBtnAttack3", new Button(false, Vector2{ 75,410 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 3));
+	GameObject::CreateGameObject("GOBtnAttack4", new Button(false, Vector2{ 325,410 }, Vector2{ 150, 50 }, & assets->SpriteList["imgUIButton"], 4));
 
 	currentPhase = CurrentBattlePhase::ChooseAttack;
 	ChangeButtonDispositions();
@@ -87,21 +99,8 @@ void Engine::Start(){
 }
 
 void Engine::Update() {
-	//if (playerCharacters[currentActors[0]].speed + HasStatus(playerCharacters[currentActors[0]].currentStatus,Status::Frost)?-10:0 >= enemyCharacters[currentActors[1]].speed + HasStatus(enemyCharacters[currentActors[1]].currentStatus, Status::Frost) ? -10 : 0) {
-	//	currentPhase = CurrentBattlePhase::AttackPlayer;
-	//	UserInput();
-	//	currentPhase = CurrentBattlePhase::AttackEnemy;
-	//	UserInput();
-	//}
-	//else {
-	//	currentPhase = CurrentBattlePhase::AttackEnemy;
-	//	UserInput();
-	//	currentPhase = CurrentBattlePhase::AttackPlayer;
-	//	UserInput();
-	//}
-	//CheckDeath();
 	if (events.size() > 0) {
-		events[0].time -= GetFrameTime();
+		events[0].time -= GetFrameTime() * speed;
 		if (events[0].time <= 0) {
 			events.erase(events.begin());
 			NextEvent();
@@ -113,8 +112,12 @@ void Engine::Update() {
 		go->Update();
 	}
 
-	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-		GameObject::CreateGameObject("posNbr" + to_string(std::rand()), new FlyingNumber(GetMousePosition(), 20));
+	if (IsKeyPressed(KEY_TAB)) {
+		if (speed == 1)speed = 10;
+		else speed = 1;
+	}
+
+	if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
 		for (GameObject* go : goList) {
 			if (go->IsCursorInBounds() && go->enabled) {
 				input = go->Clicked();
@@ -122,14 +125,11 @@ void Engine::Update() {
 			}
 		}
 	}
-	if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
-		GameObject::CreateGameObject("negNbr" + to_string(std::rand()), new FlyingNumber(GetMousePosition(), -20));
-	}
 }
 
 void Engine::Draw() {
 	BeginDrawing();
-	ClearBackground(GRAY);
+	DrawTexture(assets->SpriteList["imgBackground"], 0, 0, WHITE);
 	vector<GameObject*> goList = GameObject::GetAllGameObjects();
 	for (GameObject* go : goList) {
 		if (go->enabled) go->Draw();
@@ -256,8 +256,10 @@ void Engine::NextEvent() {
 	if (events.size() > 0) {
 		if (events[0].code[0] == 'p') DamageCharacter(enemyCharacters[currentActors[1]], events[0].attack);
 		else if (events[0].code[0] == 'e') DamageCharacter(playerCharacters[currentActors[0]], events[0].attack);
+		else if (events[0].code[0] == 'q') CloseWindow();
 	}
 	else{
+		CheckDeath();
 		if (lastPlayed == 11) {
 			currentPhase = CurrentBattlePhase::ChooseAttack;
 			ChangeButtonDispositions();
@@ -297,8 +299,17 @@ void Engine::AttackTurn() {
 		if(isPlayer) events.push_back(AttackEvent{ 2, "p", attack->name + " use " + attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].name + " !\n\n It deals " + to_string(attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].damage) + " damages and inflict " + statusNames[attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]].status] + " !", attackInfos[playerCharacters[currentActors[0]]->attacks[pAttack]] });
 		else events.push_back(AttackEvent{ 2, "e", attack->name + " use " + attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]].name + " !\n\n It deals " + to_string(attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]].damage) + " damages and inflict " + statusNames[attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]].status] + " !", attackInfos[enemyCharacters[currentActors[1]]->attacks[eAttack]] });
 	}
+	for (AttackEvent e : events) {
+		if (e.attack.status == Status::Heal) {
+			if (e.code == "p") e.code = "e";
+			else e.code = "p";
+		}
+		if (e.code == "e") playerCharacters[currentActors[0]]->currentStatus.push_back(e.attack.status);
+		else enemyCharacters[currentActors[1]]->currentStatus.push_back(e.attack.status);
+	}
 	EffectsAfterAttack(defend, !isPlayer);
 	Heal(attack, isPlayer);
+
 	NextEvent();
 }
 
@@ -369,7 +380,7 @@ void Engine::Heal(Character* attacker, bool isPlayer)
 		{
 		case Status::Heal:
 			heal = -(int)(attacker->maxHealth / 20);
-			events.push_back(AttackEvent{ 1, (isPlayer ? "p" : "e"), attacker->name + " is Healing! He is restoring " + to_string(heal) + " health.", AttackInfo{DamageTypes::Normal, heal, Status::None, ""} });
+			events.push_back(AttackEvent{ 1, (!isPlayer ? "p" : "e"), attacker->name + " is Healing! He is restoring " + to_string(heal) + " health.", AttackInfo{DamageTypes::Normal, heal, Status::None, ""} });
 			return;
 
 		default:
@@ -379,69 +390,53 @@ void Engine::Heal(Character* attacker, bool isPlayer)
 	return;
 }
 
-//void Engine::PrintCurrentPhase(int choice) {
-//	DrawScreen(&playerCharacters[currentActors[0]], &enemyCharacters[currentActors[1]], currentPhase, choice);
-//}
-//
-//int Engine::WaitForPlayerInput() {
-//	vector<GameObject*> buttons = GameObject::GetAllGameObjectsWith(GameObjectType::Button);
-//
-//	for (int i = 0; i < 4; i++) {
-//		Button* b = dynamic_cast<Button*>(buttons[i]);
-//		b->text = attackInfos[playerCharacters[currentActors[0]].attacks[i]].name;
-//		b->Draw();
-//	}
-//	EndDrawing();
-//	while (!IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-//	}
-//	Vector2 mousePos = GetMousePosition();
-//
-//	for (GameObject* x : buttons) {
-//		if (Button* button = static_cast<Button*>(x)) {
-//			if (button->IsCursorInBounds())return button->value;
-//		}
-//	}
-//	return 0;
-//}
-//
 void Engine::AttackCharacter(Character* attacker, Character* defender, short attackChoice) {
 	AttackInfo info = attackInfos[attacker->attacks[attackChoice]];
 	DamageCharacter(defender, info);
-	/*if(info.status != Status::Heal) defender->currentStatus.push_back(info.status);
-	else attacker->currentStatus.push_back(info.status);*/
 }
-//
+
 
 void Engine::DamageCharacter(Character* character, AttackInfo attack){
-	GameObject::CreateGameObject("NumberParticle" + to_string(std::rand()), new FlyingNumber(character->position, attack.damage));
-	character->health -= attack.damage * GetWeakness(attack.damageType, character->elementalTypes);
+	int damages = attack.damage * GetWeakness(attack.damageType, character->elementalTypes);
+	GameObject::CreateGameObject("NumberParticle" + to_string(std::rand()), new FlyingNumber(character->position, damages));
+	character->health -= damages;
 	if(character->health > character->maxHealth) character->health = character->maxHealth;
-	character->currentStatus.push_back(attack.status);
 }
 
+void Engine::CheckDeath()
+{
+	if (enemyCharacters[currentActors[1]]->health <= 0) {
+		lastPlayed = 11;
+		currentActors[1]++;
+		ChangeCharacter();
+		if (currentActors[1] == 6 ) {
+			events.push_back(AttackEvent{ 10, "",  "Well done! You win!", AttackInfo{DamageTypes::Normal, 0, Status::None, ""} });
+			events.push_back(AttackEvent{ 10, "q",  "Well done! You win!", AttackInfo{DamageTypes::Normal, 0, Status::None, ""} });
+			NextEvent();
+		}
+	}
+	else if (playerCharacters[currentActors[0]]->health <= 0)
+	{
+		lastPlayed = 11;
+		currentActors[0]++;
+		ChangeCharacter();
+		if (currentActors[0] == 4 ) {
+			events.push_back(AttackEvent{ 10, "",  "Your Team is Dead. Game Over.", AttackInfo{DamageTypes::Normal, 0, Status::None, ""} });
+			events.push_back(AttackEvent{ 10, "q",  "Your Team is Dead. Game Over.", AttackInfo{DamageTypes::Normal, 0, Status::None, ""} });
+			NextEvent();
+		}
+	}
+}
 
-
-
-//
-
-
-//void Engine::CheckDeath()
-//{
-//	if (enemyCharacters[currentActors[1]].health <= 0) {
-//		currentPhase = CurrentBattlePhase::Died;
-//		PrintCurrentPhase(0);
-//		currentActors[1]++;
-//		if (currentActors[1] == enemyCharacters.size()) {
-//			void CloseWindow(void);
-//		}
-//	}
-//	else if (playerCharacters[currentActors[0]].health <= 0)
-//	{
-//		currentPhase = CurrentBattlePhase::Died;
-//		PrintCurrentPhase(1);
-//		currentActors[0]++;
-//		if (currentActors[0] == playerCharacters.size()) {
-//			void CloseWindow(void);
-//		}
-//	}
-//}
+void Engine::ChangeCharacter() {
+	for (Character* character : playerCharacters) {
+		character->enabled = false;
+	}
+	playerCharacters[currentActors[0]]->enabled = true;
+	for (Character* character : enemyCharacters) {
+		if (character != nullptr) {
+			character->enabled = false;
+		}
+	}
+	enemyCharacters[currentActors[1]]->enabled = true;
+}

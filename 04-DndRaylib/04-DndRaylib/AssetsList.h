@@ -11,7 +11,7 @@ using std::map;
 
 class AssetList {
 private:
-    Texture2D textureTemp;
+    static Texture2D textureTemp;
 
 public:
     static Music music;

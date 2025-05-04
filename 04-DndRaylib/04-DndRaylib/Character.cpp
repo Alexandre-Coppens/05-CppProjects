@@ -30,19 +30,19 @@ void Character::Draw() {
 		switch (status)
 		{
 		case Status::Poisoned:
-			DrawTextureV(AssetList::SpriteList["Poison"], position, WHITE);
+			DrawTextureV(AssetList::SpriteList["imgEffPoison"], position, WHITE);
 			break;
 		case Status::Frost:
-			DrawTextureV(AssetList::SpriteList["Iced"], position, WHITE);
+			DrawTextureV(AssetList::SpriteList["imgEffIced"], position, WHITE);
 			break;
 		case Status::Burn:
-			DrawTextureV(AssetList::SpriteList["Flames"], position, WHITE);
+			DrawTextureV(AssetList::SpriteList["imgEffFlames"], position, WHITE);
 			break;
 		case Status::Electric:
-			DrawTextureV(AssetList::SpriteList["Paralysis"], position, WHITE);
+			DrawTextureV(AssetList::SpriteList["imgEffParalysis"], position, WHITE);
 			break;
 		case Status::Heal:
-			DrawTextureV(AssetList::SpriteList["Heal"], position, WHITE);
+			DrawTextureV(AssetList::SpriteList["imgEffHeal"], position, WHITE);
 			break;
 		case Status::None:
 			DrawTextureV(AssetList::SpriteList["Unknown"], position, WHITE);

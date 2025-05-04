@@ -2,7 +2,6 @@
 #include <string>
 #include "Engine.h"
 #include "AssetsList.h"
-#include "Main.h"
 
 using std::string;
 Engine engine;
@@ -24,7 +23,6 @@ int main()
 	}
 
     UnloadMusicStream(AssetList::music);
-
     CloseAudioDevice();
     CloseWindow();
 }

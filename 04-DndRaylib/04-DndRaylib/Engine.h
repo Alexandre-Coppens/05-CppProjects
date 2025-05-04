@@ -13,24 +13,26 @@ private:
 	vector<Character*> playerCharacters;
 	vector<Character*> enemyCharacters;
 
-	AssetList* assets;
+	AssetList* assets{};
 
-	short pAttack;
-	short eAttack;
+	short pAttack{};
+	short eAttack{};
 
-	short input;
-	short lastPlayed;
+	short input{};
+	short lastPlayed{};
 
-	string attackEvent;
-	float attackEventTime;
+	short speed{};
+
+	string attackEvent{};
+	float attackEventTime{};
 
 	vector<short> currentActors{ 0,0 };
 
 	struct AttackEvent {
-		float time;
-		string code;
-		string text;
-		AttackInfo attack;
+		float time{};
+		string code{};
+		string text{};
+		AttackInfo attack{};
 	};
 	vector<AttackEvent> events;
 
@@ -45,11 +47,10 @@ private:
 	void ChangeButtonDispositions();
 	void NextEvent();
 	void AttackTurn();
-	void PrintCurrentPhase(int choice);
-	int WaitForPlayerInput();
 	bool EffectsAfterAttack(Character* defender, bool isPlayer);
 	void Heal(Character* attacker, bool isPlayer);
 	void CheckDeath();
+	void ChangeCharacter();
 	void DamageCharacter(Character* defender, AttackInfo attack);
 	bool EffectsBeforeAttack(Character* attacker);
 	void AttackCharacter(Character* attacker, Character* defender, short attackChoice);
