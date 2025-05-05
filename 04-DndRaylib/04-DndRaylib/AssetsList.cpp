@@ -19,6 +19,10 @@ AssetList::AssetList() {
     LoadTexture2D("imgCharGolem", "resources/Golem.png");
     LoadTexture2D("imgCharLich", "resources/Lich.png");
     LoadTexture2D("imgCharDragon", "resources/Dragon.png");
+    LoadTexture2D("imgCharKnight", "resources/Knight.png");
+    LoadTexture2D("imgCharRogue", "resources/Rogue.png");
+    LoadTexture2D("imgCharWizard", "resources/Wizard.png");
+    LoadTexture2D("imgCharBarbarian", "resources/Barbarian.png");
     LoadTexture2D("", "resources/Unknown.png");
     LoadTexture2D("imgEffHeal", "resources/Heal.png");
     LoadTexture2D("imgUIButton", "resources/Button.png");

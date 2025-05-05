@@ -49,19 +49,19 @@ void Engine::Start(){
 
 	vector<DamageTypes> knightTypes{ DamageTypes::Slashing, DamageTypes::Fire };
 	vector<AttackName> knightAttacks{ AttackName::Slash, AttackName::FireSword, AttackName::Smite, AttackName::Heal };
-	GameObject::CreateGameObject("KNIGHT", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, knightTypes, knightAttacks, float(rand() % 50), float(500)));
+	GameObject::CreateGameObject("KNIGHT", new Character(&assets->SpriteList["imgCharKnight"], Vector2{ 50, 100 }, knightTypes, knightAttacks, float(rand() % 50), float(500)));
 
 	vector<DamageTypes> rogueTypes{ DamageTypes::Piercing, DamageTypes::Necrotic };
 	vector<AttackName> rogueAttacks{ AttackName::PiercingDagger, AttackName::ShadowDagger, AttackName::Poison, AttackName::Heal };
-	GameObject::CreateGameObject("ROGUE", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, rogueTypes, rogueAttacks, float(rand() % 50), float(300)));
+	GameObject::CreateGameObject("ROGUE", new Character(&assets->SpriteList["imgCharRogue"], Vector2{ 50, 100 }, rogueTypes, rogueAttacks, float(rand() % 50), float(300)));
 
 	vector<DamageTypes> wizardTypes{ DamageTypes::Lighting, DamageTypes::Fire };
 	vector<AttackName> wizardAttacks{ AttackName::Fireball, AttackName::Lightning, AttackName::Poison, AttackName::Heal };
-	GameObject::CreateGameObject("WIZARD", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, wizardTypes, wizardAttacks, float(rand() % 50), float(250)));
+	GameObject::CreateGameObject("WIZARD", new Character(&assets->SpriteList["imgCharWizard"], Vector2{ 50, 100 }, wizardTypes, wizardAttacks, float(rand() % 50), float(250)));
 
 	vector<DamageTypes> barbarianTypes{ DamageTypes::Fire, DamageTypes::Cold };
 	vector<AttackName> barbarianAttacks{ AttackName::Bludgeon, AttackName::HeadSmasher, AttackName::FireAxe, AttackName::IceAxe };
-	GameObject::CreateGameObject("BARBARIAN", new Character(&assets->SpriteList["imgCharBasic"], Vector2{ 50, 100 }, barbarianTypes, barbarianAttacks, float(rand() % 50), float(450)));
+	GameObject::CreateGameObject("BARBARIAN", new Character(&assets->SpriteList["imgCharBarbarian"], Vector2{ 50, 100 }, barbarianTypes, barbarianAttacks, float(rand() % 50), float(450)));
 
 
 
