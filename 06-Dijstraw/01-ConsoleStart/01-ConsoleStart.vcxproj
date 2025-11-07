@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{c3a63000-ab1a-462c-b55b-3cc0eb52135a}</ProjectGuid>
-    <RootNamespace>My03RaylibProject</RootNamespace>
+    <ProjectGuid>{276f0425-073c-4f84-8ede-bab2ae0e4b79}</ProjectGuid>
+    <RootNamespace>My01ConsoleStart</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>06-Dijstrae</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,13 +77,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\royer\GITFORK\05-CppProjects\raylib-5.0_win64_msvc16\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\royer\GITFORK\05-CppProjects\raylib-5.0_win64_msvc16\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,13 +105,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\alexandre.coppens\Documents\Git\05-CppProjects\03-RaylibProject\raylib-5.0_win64_msvc16\include;C:\Users\royer\GITFORK\05-CppProjects\raylib-5.0_win64_msvc16\include;C:\Users\alexandre.coppens\git\Documents\05-CppProjects\raylib-5.0_win64_msvc16\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\01-ConsoleStart\Sources\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\alexandre.coppens\Documents\Git\05-CppProjects\03-RaylibProject\raylib-5.0_win64_msvc16\lib;C:\Users\royer\GITFORK\05-CppProjects\raylib-5.0_win64_msvc16\lib;C:\Users\alexandre.coppens\git\Documents\05-CppProjects\raylib-5.0_win64_msvc16\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>raylib.lib;winmm.lib;raylib.lib;winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\01-ConsoleStart\Sources\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>raylib.lib;winmm.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,22 +132,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Paddle.cpp" />
-    <ClCompile Include="Score.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pathfinder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ball.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Paddle.h" />
-    <ClInclude Include="Score.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Ressources\Background.jpg" />
+    <ClInclude Include="Tile.h" />
+    <ClInclude Include="Pathfinder.h" />
+    <ClInclude Include="raylib.h" />
+    <ClInclude Include="raymath.h" />
+    <ClInclude Include="rlgl.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
